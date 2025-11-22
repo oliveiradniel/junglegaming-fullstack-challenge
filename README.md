@@ -259,13 +259,25 @@ cd junglegaming-fullstack-challenge
 cp .env.example .env
 ```
 
-2. Iniciar o ambiente:
+4. Build do monorepo / pacotes compartilhados
 
-Se estiver com uma versão antiga do Docker precisará executar `docker-compose up --build`.
+- O projeto depende do package shared, que contém tipos, entidades e enums usados por todos os microserviços. Antes de rodar qualquer serviço, é necessário compilá-lo:
+
+```bash
+# No root do repositório
+
+npm install
+```
+
+Esse comando instalará as dependências e em seguida executará o script `postinstall` que iniciará o build da pasta `shared`.
+
+5. Iniciar o ambiente:
 
 ```bash
 docker compose up -d --build
 ```
+
+Se estiver com uma versão antiga do Docker precisará executar `docker-compose up --build`.
 
 Isso sobe:
 
