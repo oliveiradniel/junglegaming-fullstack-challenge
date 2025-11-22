@@ -1,0 +1,190 @@
+version: '3.8'
+
+services:
+
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: apps/web/docker/Dockerfile
+    ports:
+      - '3000:3000'
+    environment:
+      VITE_API_URL: ${VITE_API_URL}
+      VITE_NOTIFICATIONS_SERVICE_BASE_URL: ${VITE_NOTIFICATIONS_SERVICE_BASE_URL}
+    working_dir: /app/apps/web
+    networks:
+      - challenge_public_network
+    command: npm run dev -- --host 0.0.0.0
+
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: .
+      dockerfile: apps/api-gateway/docker/Dockerfile
+    ports:
+      - "3001:3001"
+    restart: always
+    environment:
+      PORT: 3001
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
+      AUTH_SERVICE_BASE_URL: ${AUTH_SERVICE_BASE_URL}
+      TASKS_SERVICE_BASE_URL: ${TASKS_SERVICE_BASE_URL}
+      USERS_TASKS_SERVICE_BASE_URL: ${USERS_TASKS_SERVICE_BASE_URL}
+      USERS_SERVICE_BASE_URL: ${USERS_SERVICE_BASE_URL}
+      TASK_AUDIT_LOGS_SERVICE_BASE_URL: ${TASK_AUDIT_LOGS_SERVICE_BASE_URL}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+    volumes:
+      # - .:/app
+      # - /app/node_modules
+      - ./apps/api-gateway:/app/apps/api-gateway
+      - ./packages:/app/packages
+      - /app/apps/api-gateway/node_modules
+    working_dir: /app/apps/api-gateway
+    depends_on:
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - challenge_public_network
+
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: apps/auth-service/docker/Dockerfile
+    ports:
+      - '3002:3002'
+    restart: always
+    environment:
+      PORT: 3002
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    volumes:
+      # - .:/app
+      # - /app/node_modules
+      - ./apps/auth-service:/app/apps/auth-service
+      - ./packages:/app/packages
+      - /app/apps/auth-service/node_modules
+    working_dir: /app/apps/auth-service
+    depends_on:
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - challenge_public_network
+
+  tasks-service:
+    container_name: tasks-service
+    build:
+      context: .
+      dockerfile: apps/tasks-service/docker/Dockerfile
+    ports:
+      - '3003:3003'
+    restart: always
+    environment:
+      PORT: 3003
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      BROKER_URL: ${BROKER_URL}
+    volumes:
+      - ./apps/tasks-service:/app/apps/tasks-service
+      - ./packages:/app/packages
+      - /app/node_modules
+    working_dir: /app/apps/tasks-service
+    depends_on:
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - challenge_public_network
+
+  notifications-service:
+    container_name: notifications-service
+    build:
+      context: .
+      dockerfile: apps/notifications-service/docker/Dockerfile
+    ports:
+      - '3004:3004'
+    restart: always
+    environment:
+      PORT: 3004
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN}
+      BROKER_URL: ${BROKER_URL}
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/notifications-service/node_modules
+    working_dir: /app/apps/notifications-service
+    depends_on:
+      tasks-service:
+        condition: service_started
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+    networks:
+      - challenge_public_network
+
+  db:
+    image: postgres:17-alpine
+    container_name: db
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+    networks:
+      - challenge_public_network
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmqa
+      - rabbitmq_logs:/var/logs/rabbitmq
+    networks:
+      - challenge_public_network
+
+volumes:
+  pg_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+  rabbitmq_logs:
+    driver: local
+
+networks:
+  challenge_public_network:
+    driver: bridge

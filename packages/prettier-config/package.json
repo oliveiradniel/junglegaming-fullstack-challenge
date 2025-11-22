@@ -1,0 +1,13 @@
+{
+  "name": "@challenge/prettier-config",
+  "version": "0.0.0",
+  "types": "index.d.ts",
+  "main": "index.mjs",
+  "private": true,
+  "exports": {
+    ".": "./index.mjs"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}

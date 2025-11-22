@@ -1,0 +1,21 @@
+{
+  "name": "@challenge/ts-config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    "./base": "./base.json",
+    "./nest": "./nest.json",
+    "./react": "./react.json",
+    "./build": "./build.json"
+  },
+  "files": [
+    "base.json",
+    "nest.json",
+    "react.json",
+    "build.json"
+  ]
+}

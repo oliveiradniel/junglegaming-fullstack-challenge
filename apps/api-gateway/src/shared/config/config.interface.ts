@@ -1,0 +1,11 @@
+export interface IConfig {
+  PORT: number;
+  FRONTEND_ORIGIN: string;
+  AUTH_SERVICE_BASE_URL: string;
+  USERS_SERVICE_BASE_URL: string;
+  TASKS_SERVICE_BASE_URL: string;
+  TASK_AUDIT_LOGS_SERVICE_BASE_URL: string;
+  USERS_TASKS_SERVICE_BASE_URL: string;
+  JWT_ACCESS_SECRET: string;
+  JWT_REFRESH_SECRET: string;
+}

@@ -1,0 +1,7 @@
+{
+  "extends": "@challenge/ts-config/nest",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": "./"
+  }
+}
