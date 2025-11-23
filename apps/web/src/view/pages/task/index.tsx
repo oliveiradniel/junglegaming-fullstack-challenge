@@ -12,7 +12,7 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { priorityLabels, statusLabels } from '../tasks/labels';
+import { priorityLabels, statusLabels } from '@/config/labels';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../../components/ui/button';
@@ -169,7 +169,6 @@ export function Task() {
                       task?.status === 'DONE' && 'bg-green-400',
                     )}
                   >
-                    {task?.status === 'LOW' && ''}
                     <span className="font-medium">
                       {statusLabels[task?.status as TaskStatus]}
                     </span>

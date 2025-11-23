@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { env } from '@/config/env';
 import { io, Socket } from 'socket.io-client';
 import { toast } from '../utils/toast';
-import { priorityLabels, statusLabels } from '@/view/pages/tasks/labels';
+import { priorityLabels, statusLabels } from '@/config/labels';
 
 import type {
   AssignedToTaskNotificationPayload,

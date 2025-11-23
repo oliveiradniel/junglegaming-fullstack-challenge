@@ -14,10 +14,7 @@ import { UpdateTaskSchema } from '@/app/schemas/update-task-schema';
 
 import { toast } from '@/app/utils/toast';
 
-import {
-  optionsTaskPriority,
-  optionsTaskStatus,
-} from '@/app/constants/options';
+import { optionsTaskPriority, optionsTaskStatus } from '@/config/options';
 
 import type { TaskWithCommentCount, UpdateTaskData } from '@challenge/shared';
 import { AxiosError } from 'axios';

@@ -2,7 +2,7 @@ import { useTasks } from '@/app/hooks/use-tasks';
 
 import filteredTasksNotFoundImage from '@/assets/images/filtered-tasks-not-found.svg';
 
-import { priorityLabels, statusLabels } from '../labels';
+import { priorityLabels, statusLabels } from '@/config/labels';
 
 interface EmptyFilteredTasksProps {
   searchInput: string;

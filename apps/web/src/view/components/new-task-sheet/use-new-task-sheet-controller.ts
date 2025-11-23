@@ -7,10 +7,7 @@ import { useTasks } from '@/app/hooks/use-tasks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreateTaskSchema } from '@/app/schemas/create-task-schema';
 
-import {
-  optionsTaskPriority,
-  optionsTaskStatus,
-} from '@/app/constants/options';
+import { optionsTaskPriority, optionsTaskStatus } from '@/config/options';
 
 import { toast } from '@/app/utils/toast';
 import { AxiosError } from 'axios';

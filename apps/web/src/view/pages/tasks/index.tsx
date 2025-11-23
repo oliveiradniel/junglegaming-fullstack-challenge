@@ -2,12 +2,14 @@ import { useTasksController } from './use-tasks-controller';
 
 import { Skeleton } from '../../components/ui/skeleton';
 import { NewTaskSheet } from '../../components/new-task-sheet';
-import { Header } from './components/header';
 import { TasksCard } from './components/tasks-card';
 import { Separator } from '@/view/components/ui/separator';
 import { EmptyFilteredTasks } from './components/empty-filtered-tasks';
 import { EmptyTasks } from './components/empty-tasks';
 import { Spinner } from '@/view/components/ui/spinner';
+import { Header } from '@/view/components/header';
+import { PaginationControls } from './components/pagination-controls';
+import { Filters } from './components/filters';
 
 export function Tasks() {
   const {
@@ -36,22 +38,30 @@ export function Tasks() {
       <div className="flex h-[calc(100%-90px)]">
         <div className="flex h-full w-full flex-col gap-6 p-6">
           <Header
-            hasPrevious={hasPrevious}
-            hasNext={hasNext}
-            startPage={startPage}
-            pagesToShow={pagesToShow}
-            currentPage={page}
-            endPage={endPage}
-            totalPages={totalPages}
             searchInput={searchInput}
-            filteredTasksList={filteredTasksList}
-            isTasksLoading={isTasksLoading}
-            goToPage={goToPage}
-            totalTasksCount={totalTasksCount}
-            handlePreviousTasksPage={handlePreviousTasksPage}
-            handleNextTasksPage={handleNextTasksPage}
+            placeholderInput="Digite o título de uma tarefa"
+            itemsList={filteredTasksList}
+            isLoading={isTasksLoading}
+            itemsCount={totalTasksCount}
             handleChangeSearchInput={handleChangeSearchInput}
-          />
+          >
+            <PaginationControls
+              hasPrevious={hasPrevious}
+              hasNext={hasNext}
+              startPage={startPage}
+              pagesToShow={pagesToShow}
+              endPage={endPage}
+              totalPages={totalPages}
+              currentPage={page}
+              itemsCount={totalTasksCount}
+              goToPage={goToPage}
+              isDisabled={isTasksLoading}
+              handlePreviousTasksPage={handlePreviousTasksPage}
+              handleNextTasksPage={handleNextTasksPage}
+            >
+              <Filters disabled={isTasksLoading || totalTasksCount === 0} />
+            </PaginationControls>
+          </Header>
 
           <Separator />
 

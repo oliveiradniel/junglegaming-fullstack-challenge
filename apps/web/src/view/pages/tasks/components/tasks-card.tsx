@@ -2,7 +2,7 @@ import { cn } from '@/lib/utils';
 import { formatDateToBR } from '@/app/utils/format-date-br';
 import { truncateString } from '@/app/utils/truncate-string';
 
-import { priorityLabels, statusLabels } from '../labels';
+import { priorityLabels, statusLabels } from '@/config/labels';
 
 import { Card, CardDescription, CardTitle } from '@/view/components/ui/card';
 import { CalendarClock, CalendarPlus, Flag, MessageSquare } from 'lucide-react';
@@ -45,7 +45,7 @@ export function TasksCard({ filteredTasksList }: TasksCardProps) {
                 />
               </div>
               <CardDescription>
-                {truncateString(description, 60)}
+                {truncateString(description, 30)}
               </CardDescription>
 
               <div>

@@ -1,7 +1,7 @@
 import { useDeleteTaskDialog } from './use-delete-task-dialog';
 
 import { formatDateToBR } from '@/app/utils/format-date-br';
-import { statusLabels } from '@/view/pages/tasks/labels';
+import { statusLabels } from '@/config/labels';
 
 import {
   Dialog,
