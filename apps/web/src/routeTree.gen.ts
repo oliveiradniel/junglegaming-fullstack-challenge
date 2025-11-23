@@ -15,7 +15,7 @@ import { Route as SplatRouteImport } from './routes/$'
 import { Route as PublicRegisterRouteImport } from './routes/_public/register'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as AuthenticatedTasksRouteImport } from './routes/_authenticated/tasks'
-import { Route as AuthenticatedTaskAuditLogsRouteImport } from './routes/_authenticated/task-audit-logs'
+import { Route as AuthenticatedTasksAuditLogsRouteImport } from './routes/_authenticated/tasks_/audit-logs'
 import { Route as AuthenticatedTasksTaskIdRouteImport } from './routes/_authenticated/tasks_/$taskId'
 
 const PublicRoute = PublicRouteImport.update({
@@ -46,10 +46,10 @@ const AuthenticatedTasksRoute = AuthenticatedTasksRouteImport.update({
   path: '/tasks',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedTaskAuditLogsRoute =
-  AuthenticatedTaskAuditLogsRouteImport.update({
-    id: '/task-audit-logs',
-    path: '/task-audit-logs',
+const AuthenticatedTasksAuditLogsRoute =
+  AuthenticatedTasksAuditLogsRouteImport.update({
+    id: '/tasks_/audit-logs',
+    path: '/tasks/audit-logs',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedTasksTaskIdRoute =
@@ -61,58 +61,58 @@ const AuthenticatedTasksTaskIdRoute =
 
 export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
-  '/task-audit-logs': typeof AuthenticatedTaskAuditLogsRoute
   '/tasks': typeof AuthenticatedTasksRoute
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
   '/tasks/$taskId': typeof AuthenticatedTasksTaskIdRoute
+  '/tasks/audit-logs': typeof AuthenticatedTasksAuditLogsRoute
 }
 export interface FileRoutesByTo {
   '/$': typeof SplatRoute
-  '/task-audit-logs': typeof AuthenticatedTaskAuditLogsRoute
   '/tasks': typeof AuthenticatedTasksRoute
   '/login': typeof PublicLoginRoute
   '/register': typeof PublicRegisterRoute
   '/tasks/$taskId': typeof AuthenticatedTasksTaskIdRoute
+  '/tasks/audit-logs': typeof AuthenticatedTasksAuditLogsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/$': typeof SplatRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
-  '/_authenticated/task-audit-logs': typeof AuthenticatedTaskAuditLogsRoute
   '/_authenticated/tasks': typeof AuthenticatedTasksRoute
   '/_public/login': typeof PublicLoginRoute
   '/_public/register': typeof PublicRegisterRoute
   '/_authenticated/tasks_/$taskId': typeof AuthenticatedTasksTaskIdRoute
+  '/_authenticated/tasks_/audit-logs': typeof AuthenticatedTasksAuditLogsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/$'
-    | '/task-audit-logs'
     | '/tasks'
     | '/login'
     | '/register'
     | '/tasks/$taskId'
+    | '/tasks/audit-logs'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/$'
-    | '/task-audit-logs'
     | '/tasks'
     | '/login'
     | '/register'
     | '/tasks/$taskId'
+    | '/tasks/audit-logs'
   id:
     | '__root__'
     | '/$'
     | '/_authenticated'
     | '/_public'
-    | '/_authenticated/task-audit-logs'
     | '/_authenticated/tasks'
     | '/_public/login'
     | '/_public/register'
     | '/_authenticated/tasks_/$taskId'
+    | '/_authenticated/tasks_/audit-logs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,11 +165,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTasksRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/task-audit-logs': {
-      id: '/_authenticated/task-audit-logs'
-      path: '/task-audit-logs'
-      fullPath: '/task-audit-logs'
-      preLoaderRoute: typeof AuthenticatedTaskAuditLogsRouteImport
+    '/_authenticated/tasks_/audit-logs': {
+      id: '/_authenticated/tasks_/audit-logs'
+      path: '/tasks/audit-logs'
+      fullPath: '/tasks/audit-logs'
+      preLoaderRoute: typeof AuthenticatedTasksAuditLogsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/tasks_/$taskId': {
@@ -183,15 +183,15 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedTaskAuditLogsRoute: typeof AuthenticatedTaskAuditLogsRoute
   AuthenticatedTasksRoute: typeof AuthenticatedTasksRoute
   AuthenticatedTasksTaskIdRoute: typeof AuthenticatedTasksTaskIdRoute
+  AuthenticatedTasksAuditLogsRoute: typeof AuthenticatedTasksAuditLogsRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedTaskAuditLogsRoute: AuthenticatedTaskAuditLogsRoute,
   AuthenticatedTasksRoute: AuthenticatedTasksRoute,
   AuthenticatedTasksTaskIdRoute: AuthenticatedTasksTaskIdRoute,
+  AuthenticatedTasksAuditLogsRoute: AuthenticatedTasksAuditLogsRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(

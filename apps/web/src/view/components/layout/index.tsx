@@ -1,13 +1,16 @@
+import { Outlet } from '@tanstack/react-router';
 import { SidebarProvider, SidebarTrigger } from '../ui/sidebar';
+
 import { AppSidebar } from './app-sidebar';
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout() {
   return (
     <SidebarProvider>
       <AppSidebar />
+
       <main className="w-full">
         <SidebarTrigger />
-        {children}
+        <Outlet />
       </main>
     </SidebarProvider>
   );

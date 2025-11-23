@@ -1,10 +1,16 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { useTasksController } from '@/view/pages/tasks/use-tasks-controller';
 import { useTasks } from '@/app/hooks/use-tasks';
 
 import { useAuth } from '@/app/hooks/use-auth';
 
-import { BookOpenText, Calendar, LogOut, Plus, User } from 'lucide-react';
+import {
+  BookOpenText,
+  Calendar,
+  History,
+  LogOut,
+  Plus,
+  User,
+} from 'lucide-react';
 import jungleGamingLogo from '@/assets/images/logo.svg';
 
 import { formatDateToBR } from '@/app/utils/format-date-br';
@@ -23,21 +29,24 @@ import { Button } from '../ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Separator } from '../ui/separator';
 
-const items = [
-  {
-    title: 'Tarefas',
-    url: '/tasks',
-    icon: BookOpenText,
-  },
-];
-
 export function AppSidebar() {
   const location = useLocation();
 
   const { user, handleLogout, isLogoutLoading } = useAuth();
   const { handleOpenNewTaskSheet } = useTasks();
 
-  const { totalTasksCount, isTasksLoading } = useTasksController();
+  const items = [
+    {
+      title: 'Tarefas',
+      url: '/tasks',
+      icon: BookOpenText,
+    },
+    {
+      title: 'Registro de auditoria',
+      url: '/tasks/audit-logs',
+      icon: History,
+    },
+  ];
 
   return (
     <Sidebar>
@@ -49,6 +58,7 @@ export function AppSidebar() {
           </span>
         </div>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarMenu className="p-2">
           {items.map((item) => {
@@ -65,14 +75,12 @@ export function AppSidebar() {
                     to={item.url}
                     className={cn(
                       'flex w-full items-center gap-2 rounded-md px-3 py-6 transition-all',
+                      !isActive && 'hover:bg-primary/20!',
                       isActive && 'cursor-default',
                     )}
                   >
-                    <item.icon className="size-5" />
+                    <item.icon />
                     <span>{item.title}</span>
-                    {item.title === 'Tarefas' && isTasksLoading
-                      ? '(...)'
-                      : `(${totalTasksCount})`}
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
