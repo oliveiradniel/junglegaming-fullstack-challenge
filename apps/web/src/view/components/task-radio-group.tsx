@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils';
 import { Label } from './ui/label';
 import {
   RadioGroup,
@@ -9,6 +10,7 @@ interface Options {
   id: string;
   value: string;
   label: string;
+  noItems: boolean;
 }
 
 interface TaskTadioGroupProps {
@@ -30,11 +32,19 @@ export function TaskRadioGroup({
     >
       {options.map((option) => (
         <div key={option.id} className="flex items-center gap-2">
-          <RadioGroupItem id={option.id} value={option.value}>
+          <RadioGroupItem
+            id={option.id}
+            value={option.value}
+            disabled={option.noItems}
+            className={cn(option.noItems && 'cursor-default!')}
+          >
             <RadioGroupIndicator />
             <Label
               htmlFor={option.id}
-              className="font-normal hover:cursor-pointer"
+              className={cn(
+                'font-normal hover:cursor-pointer',
+                option.noItems && 'cursor-default!',
+              )}
             >
               {option.label}
             </Label>
