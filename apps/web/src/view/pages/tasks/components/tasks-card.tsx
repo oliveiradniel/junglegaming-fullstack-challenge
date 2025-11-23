@@ -45,7 +45,7 @@ export function TasksCard({ filteredTasksList }: TasksCardProps) {
                 />
               </div>
               <CardDescription>
-                {truncateString(description, 60)}
+                <div>{truncateString(description, 30)}</div>
               </CardDescription>
 
               <div>
