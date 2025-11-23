@@ -63,7 +63,7 @@ export function Login({
       <CardFooter className="flex flex-col items-start">
         <div className="flex items-center gap-2">
           <span className="text-muted-foreground text-sm">
-            Já tem uma conta?
+            Ainda não tem uma conta?
           </span>
 
           <Button
