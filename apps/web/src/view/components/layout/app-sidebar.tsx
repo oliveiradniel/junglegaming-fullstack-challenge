@@ -1,6 +1,6 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { useTasks } from '@/app/hooks/use-tasks';
 
+import { useTasks } from '@/app/hooks/use-tasks';
 import { useAuth } from '@/app/hooks/use-auth';
 
 import {
@@ -63,12 +63,18 @@ export function AppSidebar() {
         <SidebarMenu className="p-2">
           {items.map((item) => {
             const isActive = location.pathname === item.url;
+            const isChildrenTaskAuditLogsActive =
+              location.pathname.startsWith('/tasks/audit-logs');
 
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive}
+                  isActive={
+                    isActive ||
+                    (item.url === '/tasks/audit-logs' &&
+                      isChildrenTaskAuditLogsActive)
+                  }
                   className="transition-all"
                 >
                   <Link
