@@ -3,7 +3,10 @@ import { Link } from '@tanstack/react-router';
 import { useListTaskCreationAuditLogQuery } from '@/app/hooks/queries/use-list-task-creation-audit-log-query';
 import { useListTaskDeletionAuditLogQuery } from '@/app/hooks/queries/use-list-task-deletion-audit-log-query';
 
-import { formatDateToBR } from '@/app/utils/format-date-br';
+import {
+  formatDateToBR,
+  formatDateToBRWithHour,
+} from '@/app/utils/format-date-br';
 import { truncateString } from '@/app/utils/truncate-string';
 import { priorityLabels, statusLabels } from '@/config/labels';
 import { cn } from '@/lib/utils';
@@ -148,7 +151,7 @@ export function TaskCreationAuditLogTable() {
                       </Popover>
                     </TableCell>
 
-                    <TableCell>{formatDateToBR(changedAt)}</TableCell>
+                    <TableCell>{formatDateToBRWithHour(changedAt)}</TableCell>
                   </TableRow>
                 );
               },

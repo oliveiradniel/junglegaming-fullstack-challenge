@@ -1,6 +1,9 @@
 import { useListTaskDeletionAuditLogQuery } from '@/app/hooks/queries/use-list-task-deletion-audit-log-query';
 
-import { formatDateToBR } from '@/app/utils/format-date-br';
+import {
+  formatDateToBR,
+  formatDateToBRWithHour,
+} from '@/app/utils/format-date-br';
 import { truncateString } from '@/app/utils/truncate-string';
 import { priorityLabels, statusLabels } from '@/config/labels';
 import { cn } from '@/lib/utils';
@@ -39,7 +42,7 @@ export function TaskDeletionAuditLogTable() {
 
             <TableHead>Valor na exclusão</TableHead>
 
-            <TableHead>Data de exclusão</TableHead>
+            <TableHead>Data e horário da exclusão</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -121,7 +124,7 @@ export function TaskDeletionAuditLogTable() {
                       </Popover>
                     </TableCell>
 
-                    <TableCell>{formatDateToBR(changedAt)}</TableCell>
+                    <TableCell>{formatDateToBRWithHour(changedAt)}</TableCell>
                   </TableRow>
                 );
               },

@@ -1,6 +1,6 @@
 import { useListTaskUpdateAuditLogQuery } from '@/app/hooks/queries/use-list-task-update-audit-log-query';
 
-import { formatDateToBR } from '@/app/utils/format-date-br';
+import { formatDateToBRWithHour } from '@/app/utils/format-date-br';
 import { fieldLabels, priorityLabels, statusLabels } from '@/config/labels';
 
 import { Skeleton } from '@/view/components/ui/skeleton';
@@ -59,7 +59,7 @@ export function TaskUpdateAuditLogTable() {
                       : newValue}
                 </TableCell>
 
-                <TableCell>{formatDateToBR(changedAt)}</TableCell>
+                <TableCell>{formatDateToBRWithHour(changedAt)}</TableCell>
               </TableRow>
             ),
           )}
