@@ -3,10 +3,18 @@ import { DeepPartial, Repository } from 'typeorm';
 
 import { TaskAuditLogEntity } from '../entities/task-audit-logs.entity';
 import { TaskAuditLogMapper } from 'src/modules/task-audit-logs/mappers/task-audit-log.mapper';
-import { TaskAuditLog } from '@challenge/shared';
 
 import { ITaskAuditLogsRepository } from 'src/database/contracts/task-audit-logs.contract';
-import { CreateTaskAuditLogData } from 'src/modules/task-audit-logs/types/create-task-audit-log-data.type';
+
+import type { CreateTaskAuditLogData } from 'src/modules/task-audit-logs/types/create-task-audit-log-data.type';
+
+import {
+  AuditAction,
+  TaskAuditLog,
+  ListCreationTaskAuditLog,
+  ListUpdateTaskAuditLog,
+  ListDeletionTaskAuditLog,
+} from '@challenge/shared';
 
 export class TaskAuditLogsRepository implements ITaskAuditLogsRepository {
   constructor(
@@ -37,6 +45,62 @@ export class TaskAuditLogsRepository implements ITaskAuditLogsRepository {
     const listTaskAuditLogs = await this.taskAuditLogsRepository.find();
 
     return TaskAuditLogMapper.toDomainList(listTaskAuditLogs);
+  }
+
+  async listTaskUpdateAuditLog(): Promise<ListUpdateTaskAuditLog[]> {
+    const list = await this.taskAuditLogsRepository.find({
+      where: {
+        action: 'UPDATE' as AuditAction,
+      },
+      select: {
+        id: true,
+        taskId: true,
+        userId: true,
+        fieldName: true,
+        taskTitle: true,
+        oldValue: true,
+        newValue: true,
+        changedAt: true,
+      },
+    });
+
+    return TaskAuditLogMapper.toDomainUpdateList(list);
+  }
+
+  async listTaskDeletionAuditLog(): Promise<ListDeletionTaskAuditLog[]> {
+    const list = await this.taskAuditLogsRepository.find({
+      where: {
+        action: 'DELETE' as AuditAction,
+      },
+      select: {
+        id: true,
+        taskId: true,
+        userId: true,
+        taskTitle: true,
+        oldValue: true,
+        changedAt: true,
+      },
+    });
+
+    return TaskAuditLogMapper.toDomainDeletionList(list);
+  }
+
+  async listTaskCreationAuditLog(): Promise<ListCreationTaskAuditLog[]> {
+    const list = await this.taskAuditLogsRepository.find({
+      where: {
+        action: 'CREATE' as AuditAction,
+      },
+      select: {
+        id: true,
+        taskId: true,
+        userId: true,
+        taskTitle: true,
+        newValue: true,
+        changedAt: true,
+      },
+    });
+
+    return TaskAuditLogMapper.toDomainCreationList(list);
   }
 
   // async list(filters: TaskAuditLogsFilters): Promise<TaskAuditLogEntity[]> {

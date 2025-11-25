@@ -6,7 +6,12 @@ import { CreateTaskAuditLogData } from './types/create-task-audit-log-data.type'
 
 import { TASK_AUDIT_LOGS_REPOSITORY } from 'src/shared/constants/tokens';
 
-import { TaskAuditLog } from '@challenge/shared';
+import {
+  ListCreationTaskAuditLog,
+  ListDeletionTaskAuditLog,
+  ListUpdateTaskAuditLog,
+  TaskAuditLog,
+} from '@challenge/shared';
 
 @Injectable()
 export class TaskAuditLogsService {
@@ -17,6 +22,18 @@ export class TaskAuditLogsService {
 
   list(): Promise<TaskAuditLog[]> {
     return this.taskAuditLogsRepository.list();
+  }
+
+  listTaskCreationAuditLog(): Promise<ListCreationTaskAuditLog[]> {
+    return this.taskAuditLogsRepository.listTaskCreationAuditLog();
+  }
+
+  listTaskUpdateAuditLog(): Promise<ListUpdateTaskAuditLog[]> {
+    return this.taskAuditLogsRepository.listTaskUpdateAuditLog();
+  }
+
+  listTaskDeletionAuditLog(): Promise<ListDeletionTaskAuditLog[]> {
+    return this.taskAuditLogsRepository.listTaskDeletionAuditLog();
   }
 
   create(data: CreateTaskAuditLogData): Promise<TaskAuditLog> {
