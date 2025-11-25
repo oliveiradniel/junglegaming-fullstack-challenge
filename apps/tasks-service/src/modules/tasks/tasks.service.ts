@@ -113,9 +113,13 @@ export class TasksService {
       priority: priority ?? task.priority,
       status: status ?? task.status,
     };
+
     const existingUserIds = await this.usersTasksService.listUserIdsByTaskId(
       task.id,
     );
+
+    const hasAnyUsersForDeletion =
+      userIds && userIds.filter((id) => existingUserIds.includes(id));
 
     const newUserIds = userIds
       ? userIds.filter((id) => !existingUserIds.includes(id))
@@ -161,8 +165,13 @@ export class TasksService {
       },
       {
         fieldName: FieldName.USER_IDS,
-        dirty: newUserIdsCount > 0,
-        newValue: JSON.stringify(existingUserIds),
+        dirty:
+          newUserIdsCount > 0 ||
+          (hasAnyUsersForDeletion
+            ? hasAnyUsersForDeletion.length > 0
+            : false) ||
+          (existingUserIds.length > 0 && userIds?.length === 0),
+        newValue: JSON.stringify(newUserIds),
         oldValue: JSON.stringify({ ...existingUserIds, newUserIds }),
       },
     ].filter((field) => field.dirty);
