@@ -171,8 +171,8 @@ export class TasksService {
             ? hasAnyUsersForDeletion.length > 0
             : false) ||
           (existingUserIds.length > 0 && userIds?.length === 0),
-        newValue: JSON.stringify(newUserIds),
-        oldValue: JSON.stringify({ ...existingUserIds, newUserIds }),
+        newValue: JSON.stringify([...newUserIds, ...existingUserIds]),
+        oldValue: JSON.stringify(existingUserIds),
       },
     ].filter((field) => field.dirty);
 

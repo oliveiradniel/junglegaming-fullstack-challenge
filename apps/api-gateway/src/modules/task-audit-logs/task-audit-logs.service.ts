@@ -2,6 +2,8 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
+import { UsersService } from '../users/users.service';
+
 import { firstValueFrom } from 'rxjs';
 import { getConfig } from 'src/shared/config/config.helper';
 
@@ -18,6 +20,7 @@ export class TaskAuditLogsService {
 
   constructor(
     private readonly httpService: HttpService,
+    private readonly usersService: UsersService,
     configService: ConfigService,
   ) {
     this.baseURL = getConfig(configService).TASK_AUDIT_LOGS_SERVICE_BASE_URL;
@@ -41,12 +44,55 @@ export class TaskAuditLogsService {
     return data;
   }
 
-  async listtaskUpdateAuditLog(): Promise<ListUpdateTaskAuditLog[]> {
+  async listTaskUpdateAuditLog(): Promise<ListUpdateTaskAuditLog[]> {
     const { data } = await firstValueFrom(
       this.httpService.get<ListUpdateTaskAuditLog[]>(`${this.baseURL}/update`),
     );
 
-    return data;
+    const enriched = await Promise.all(
+      data.map(async (log) => {
+        if (log.fieldName !== 'userIds') {
+          return log;
+        }
+
+        const oldIds = this.safeParseIds(log.oldValue as string);
+        const newIds = this.safeParseIds(log.newValue as string);
+
+        const [oldUsers, newUsers] = await Promise.all([
+          this.usersService.findUsers(oldIds),
+          this.usersService.findUsers(newIds),
+        ]);
+
+        return {
+          ...log,
+          oldValue: oldUsers.map((user) => ({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt,
+          })),
+          newValue: newUsers.map((user) => ({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            createdAt: user.createdAt,
+          })),
+        };
+      }),
+    );
+
+    return enriched;
+  }
+
+  private safeParseIds(value: string | null | undefined): string[] {
+    if (!value) return [];
+
+    try {
+      const parsed = JSON.parse(value);
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
   }
 
   async listTaskDeletionAuditLog(): Promise<ListDeletionTaskAuditLog[]> {

@@ -28,7 +28,7 @@ export class TaskAuditLogsController {
   @HttpCode(HttpStatus.OK)
   @Get('update')
   listTaskUpdateAuditLog(): Promise<ListUpdateTaskAuditLog[]> {
-    return this.taskAuditLogsService.listtaskUpdateAuditLog();
+    return this.taskAuditLogsService.listTaskUpdateAuditLog();
   }
 
   @HttpCode(HttpStatus.OK)
