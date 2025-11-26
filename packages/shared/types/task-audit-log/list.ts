@@ -1,3 +1,5 @@
+import { UserWithoutPassword } from "entities";
+
 export interface ListCreationTaskAuditLog {
   id: string;
   taskId: string;
@@ -22,7 +24,7 @@ export interface ListUpdateTaskAuditLog {
   userId: string;
   taskTitle: string;
   fieldName: string;
-  oldValue: string;
-  newValue: string;
+  oldValue: string | UserWithoutPassword[];
+  newValue: string | UserWithoutPassword[];
   changedAt: Date;
 }
