@@ -1,3 +1,5 @@
+import { UserWithoutPassword } from "./user.entity";
+
 export enum FieldName {
   TITLE = 'title',
   DESCRIPTION = 'description',
@@ -16,7 +18,7 @@ export enum AuditAction {
 export interface TaskAuditLog {
   id: string;
   taskId: string;
-  userId: string;
+  authorId: string;
   taskTitle: string;
   fieldName: FieldName | null;
   action: 'CREATE' | 'UPDATE' | 'DELETE';
