@@ -1,4 +1,7 @@
+import { Link } from '@tanstack/react-router';
+
 import { useListTaskUpdateAuditLogQuery } from '@/app/hooks/queries/use-list-task-update-audit-log-query';
+import { useListTaskDeletionAuditLogQuery } from '@/app/hooks/queries/use-list-task-deletion-audit-log-query';
 
 import {
   formatDateToBR,
@@ -6,6 +9,8 @@ import {
 } from '@/app/utils/format-date-br';
 import { fieldLabels, priorityLabels, statusLabels } from '@/config/labels';
 import { cn } from '@/lib/utils';
+import { truncateString } from '@/app/utils/truncate-string';
+import { LinkIcon } from 'lucide-react';
 
 import { Skeleton } from '@/view/components/ui/skeleton';
 import {
@@ -16,21 +21,23 @@ import {
   TableHeader,
   TableRow,
 } from '@/view/components/ui/table';
-
-import type { TaskPriority } from '@/app/enums/TaskPriority';
-import type { TaskStatus } from '@/app/enums/TaskStatus';
-import type { FieldName } from '@challenge/shared';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/view/components/ui/popover';
 import { Button } from '@/view/components/ui/button';
-import { truncateString } from '@/app/utils/truncate-string';
+
+import type { TaskPriority } from '@/app/enums/TaskPriority';
+import type { TaskStatus } from '@/app/enums/TaskStatus';
+import type { FieldName } from '@challenge/shared';
 
 export function TaskUpdateAuditLogTable() {
   const { taskUpdateAuditLogsList, isTaskUpdateAuditLogsLoading } =
     useListTaskUpdateAuditLogQuery();
+  const { taskDeletionAuditLogsList } = useListTaskDeletionAuditLogQuery();
+
+  const deletedTaskIds = taskDeletionAuditLogsList.map((log) => log.taskId);
 
   return (
     <>
@@ -48,12 +55,17 @@ export function TaskUpdateAuditLogTable() {
             <TableHead>Valor atual</TableHead>
 
             <TableHead>Data e horário da atualização</TableHead>
+
+            <TableHead className="flex justify-center">
+              <LinkIcon aria-hidden="true" className="text-primary" />
+            </TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {taskUpdateAuditLogsList.map(
             ({
+              taskId,
               taskTitle,
               authorData,
               fieldName,
@@ -61,6 +73,8 @@ export function TaskUpdateAuditLogTable() {
               newValue,
               changedAt,
             }) => {
+              const thisTaskDeleted = deletedTaskIds.includes(taskId);
+
               const isFieldNamePriority = fieldName === 'priority';
               const isFieldNameStatus = fieldName === 'status';
               const isFieldNameUserIds = fieldName === 'userIds';
@@ -237,6 +251,19 @@ export function TaskUpdateAuditLogTable() {
                   </TableCell>
 
                   <TableCell>{formatDateToBRWithHour(changedAt)}</TableCell>
+
+                  <TableCell className="flex justify-center">
+                    <Button
+                      asChild
+                      variant={thisTaskDeleted ? 'ghost' : 'link'}
+                      disabled={thisTaskDeleted}
+                      className={cn(thisTaskDeleted && 'text-destructive')}
+                    >
+                      <Link to={`/tasks/${taskId}`}>
+                        {thisTaskDeleted ? 'Indisponível' : 'Ver tarefa'}
+                      </Link>
+                    </Button>
+                  </TableCell>
                 </TableRow>
               );
             },

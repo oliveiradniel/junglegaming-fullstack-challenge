@@ -13,7 +13,7 @@ import { priorityLabels, statusLabels } from '@/config/labels';
 import { cn } from '@/lib/utils';
 
 import notFoundImage from '@/assets/images/tasks-not-found.svg';
-import { Plus } from 'lucide-react';
+import { LinkIcon, Plus } from 'lucide-react';
 
 import { Button } from '@/view/components/ui/button';
 import {
@@ -86,6 +86,10 @@ export function TaskCreationAuditLogTable() {
               <TableHead>Valores na criação</TableHead>
 
               <TableHead>Data e horário da criação</TableHead>
+
+              <TableHead className="flex justify-center">
+                <LinkIcon aria-hidden="true" className="text-primary" />
+              </TableHead>
             </TableRow>
           </TableHeader>
 
@@ -180,7 +184,7 @@ export function TaskCreationAuditLogTable() {
                                 thisTaskDeleted ? 'destructive' : 'default'
                               }
                               disabled={thisTaskDeleted}
-                              className="mt-4"
+                              className="mt-4 w-full"
                             >
                               <Link to={`/tasks/${taskId}`}>
                                 {thisTaskDeleted
@@ -193,6 +197,19 @@ export function TaskCreationAuditLogTable() {
                       </TableCell>
 
                       <TableCell>{formatDateToBRWithHour(changedAt)}</TableCell>
+
+                      <TableCell className="flex justify-center">
+                        <Button
+                          asChild
+                          variant="link"
+                          disabled={thisTaskDeleted}
+                          className={cn(thisTaskDeleted && 'text-destructive')}
+                        >
+                          <Link to={`/tasks/${taskId}`}>
+                            {thisTaskDeleted ? 'Indisponível' : 'Ver tarefa'}
+                          </Link>
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   );
                 },
