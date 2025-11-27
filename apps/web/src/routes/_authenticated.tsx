@@ -2,6 +2,7 @@ import { useTasks } from '@/app/hooks/use-tasks';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
 import { DeleteTaskDialog } from '@/view/components/delete-task-dialog';
+import { NewTaskSheet } from '@/view/components/new-task-sheet';
 
 import { Layout } from '@/view/components/layout';
 
@@ -21,7 +22,6 @@ export const Route = createFileRoute('/_authenticated')({
 
 function RouteComponent() {
   const { taskToDelete, pageForDelete } = useTasks();
-
   return (
     <>
       <DeleteTaskDialog
@@ -33,6 +33,8 @@ function RouteComponent() {
         }}
         page={pageForDelete!}
       />
+
+      <NewTaskSheet />
 
       <Layout />
     </>

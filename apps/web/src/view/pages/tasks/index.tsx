@@ -1,7 +1,6 @@
 import { useTasksController } from './use-tasks-controller';
 
 import { Skeleton } from '../../components/ui/skeleton';
-import { NewTaskSheet } from '../../components/new-task-sheet';
 import { TasksCard } from './components/tasks-card';
 import { Separator } from '@/view/components/ui/separator';
 import { EmptyFilteredTasks } from './components/empty-filtered-tasks';
@@ -33,8 +32,6 @@ export function Tasks() {
 
   return (
     <>
-      <NewTaskSheet />
-
       <div className="flex h-[calc(100%-90px)]">
         <div className="flex h-full w-full flex-col gap-6 p-6">
           <Header

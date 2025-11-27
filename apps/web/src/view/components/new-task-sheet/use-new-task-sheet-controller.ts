@@ -1,7 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useCreateTaskMutation } from '@/app/hooks/mutations/use-create-task-mutation';
-import { useTasksController } from '@/view/pages/tasks/use-tasks-controller';
 import { useTasks } from '@/app/hooks/use-tasks';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,8 +32,6 @@ export function useNewTaskSheetController() {
 
   const queryClient = useQueryClient();
 
-  const { page } = useTasksController();
-
   const { createTask, isCreateTaskLoading } = useCreateTaskMutation();
 
   const handleSubmit = reactHookHandleSubmit(async (data: CreateTaskData) => {
@@ -44,7 +41,8 @@ export function useNewTaskSheetController() {
       reset();
 
       queryClient.invalidateQueries({
-        queryKey: ['tasks', { page }],
+        queryKey: ['tasks'],
+        exact: false,
       });
       queryClient.invalidateQueries({
         queryKey: ['task-creation-audit-logs'],
@@ -63,7 +61,8 @@ export function useNewTaskSheetController() {
           });
 
         queryClient.invalidateQueries({
-          queryKey: ['tasks', { page }],
+          queryKey: ['tasks'],
+          exact: false,
         });
         queryClient.invalidateQueries({
           queryKey: ['task'],
