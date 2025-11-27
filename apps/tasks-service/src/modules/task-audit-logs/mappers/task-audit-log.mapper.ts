@@ -13,7 +13,7 @@ export class TaskAuditLogMapper {
     return {
       id: entity.id,
       taskId: entity.taskId,
-      userId: entity.userId,
+      authorId: entity.userId,
       taskTitle: entity.taskTitle,
       fieldName: entity.fieldName,
       action: entity.action,
@@ -29,7 +29,7 @@ export class TaskAuditLogMapper {
     return {
       id: entity.id,
       taskId: entity.taskId,
-      userId: entity.userId,
+      authorId: entity.userId,
       taskTitle: entity.taskTitle,
       newValue: entity.newValue!,
       changedAt: entity.changedAt,
@@ -42,7 +42,7 @@ export class TaskAuditLogMapper {
     return {
       id: entity.id,
       taskId: entity.taskId,
-      userId: entity.userId,
+      authorId: entity.userId,
       taskTitle: entity.taskTitle,
       oldValue: entity.oldValue!,
       changedAt: entity.changedAt,
@@ -53,7 +53,7 @@ export class TaskAuditLogMapper {
     return {
       id: entity.id,
       taskId: entity.taskId,
-      userId: entity.userId,
+      authorId: entity.userId,
       taskTitle: entity.taskTitle,
       fieldName: entity.fieldName!,
       oldValue: entity.oldValue!,
@@ -88,7 +88,7 @@ export class TaskAuditLogMapper {
     return {
       id: domain.id,
       taskId: domain.taskId,
-      userId: domain.userId,
+      userId: domain.authorId,
       taskTitle: domain.taskTitle,
       fieldName: domain.fieldName,
       action: domain.action as AuditAction,
