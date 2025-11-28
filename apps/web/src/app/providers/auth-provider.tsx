@@ -209,9 +209,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     }
   }, []);
-  if (isSessionLoading && !user) {
-    return <AuthLoadingScreen />;
-  }
 
   return (
     <AuthContext.Provider
@@ -227,7 +224,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLogoutLoading,
       }}
     >
-      {children}
+      {isSessionLoading ? <AuthLoadingScreen /> : children}
     </AuthContext.Provider>
   );
 }
