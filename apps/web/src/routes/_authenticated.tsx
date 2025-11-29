@@ -5,10 +5,13 @@ import { DeleteTaskDialog } from '@/view/components/delete-task-dialog';
 import { NewTaskSheet } from '@/view/components/new-task-sheet';
 
 import { Layout } from '@/view/components/layout';
+import { sessionQuery } from '@/lib/queries/session';
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: ({ context, location }) => {
-    if (!context.auth.isAuthenticated) {
+  beforeLoad: async ({ context, location }) => {
+    const user = await context.queryClient.ensureQueryData(sessionQuery);
+
+    if (!user) {
       throw redirect({
         to: '/login',
         search: {

@@ -1,13 +1,17 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router';
 
+import { sessionQuery } from '@/lib/queries/session';
+
 export const Route = createFileRoute('/_public')({
   validateSearch: (search) => {
     return {
       redirect: (search.redirect as string) || '/tasks',
     };
   },
-  beforeLoad: ({ context, search }) => {
-    if (context.auth.isAuthenticated) {
+  beforeLoad: async ({ context, search }) => {
+    const user = await context.queryClient.ensureQueryData(sessionQuery);
+
+    if (!!user) {
       throw redirect({ to: search.redirect });
     }
   },
