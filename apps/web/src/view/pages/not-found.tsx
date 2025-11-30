@@ -36,12 +36,12 @@ export function NotFound() {
           ) : (
             <div className="flex items-center gap-2">
               <Button asChild>
-                <Link to="/login" replace>
+                <Link to="/login" search={{ redirect: '/tasks' }} replace>
                   Fazer login
                 </Link>
               </Button>
               <Button asChild>
-                <Link to="/register" replace>
+                <Link to="/register" search={{ redirect: '/tasks' }} replace>
                   Criar conta
                 </Link>
               </Button>
