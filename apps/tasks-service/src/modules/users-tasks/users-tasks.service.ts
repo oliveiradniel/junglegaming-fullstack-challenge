@@ -17,8 +17,8 @@ export class UsersTasksService {
     return this.usersTasksRepository.getUserIdsByTaskId(taskId);
   }
 
-  listUsersByTaskId(taskId: string): Promise<UserTask[]> {
-    return this.usersTasksRepository.getUsersByTaskId(taskId);
+  listUsersTasksByTaskId(taskId: string): Promise<UserTask[]> {
+    return this.usersTasksRepository.getUsersTasksByTaskId(taskId);
   }
 
   create(data: CreateUserTaskData): Promise<UserTask> {

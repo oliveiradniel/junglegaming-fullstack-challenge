@@ -24,7 +24,7 @@ export class UsersTasksRepository implements IUsersTasksRepository {
     return usersTasks.map((usersTask) => usersTask.userId);
   }
 
-  async getUsersByTaskId(taskId: string): Promise<UserTask[]> {
+  async getUsersTasksByTaskId(taskId: string): Promise<UserTask[]> {
     const usersTasks = await this.usersTasksRepository.find({
       where: { taskId },
     });
