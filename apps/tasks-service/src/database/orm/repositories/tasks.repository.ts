@@ -38,6 +38,23 @@ export class TasksRepository implements ITasksRepository {
     return taskEntity ? TaskMapper.toDomain(taskEntity) : null;
   }
 
+  async getByIdWithCommentsCount(
+    id: string,
+  ): Promise<TaskWithCommentCount | null> {
+    const taskEntity = await this.tasksRepository.findOne({
+      where: { id },
+    });
+
+    if (!taskEntity) return null;
+
+    const taskWithCommentCount: TaskWithCommentCount = {
+      ...TaskMapper.toDomainWithoutComments(taskEntity),
+      commentsCount: await this.commentsRepository.countByTaskId(taskEntity.id),
+    };
+
+    return taskWithCommentCount;
+  }
+
   async getByTitle(title: string): Promise<Task | null> {
     const taskEntity = await this.tasksRepository.findOne({
       where: { title: ILike(title) },
