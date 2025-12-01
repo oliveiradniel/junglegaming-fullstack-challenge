@@ -96,8 +96,8 @@ export function TaskCreationAuditLogTable() {
           {!isTaskCreationAuditLogsLoading && (
             <TableBody>
               {taskCreationAuditLogsList.map(
-                ({ taskId, taskTitle, authorData, newValue, changedAt }) => {
-                  const taskData = JSON.parse(newValue!) as Task;
+                ({ taskId, taskTitle, authorData, values, changedAt }) => {
+                  const taskData = JSON.parse(values!) as Task;
 
                   const thisTaskDeleted = deletedTaskIds.includes(taskId);
 

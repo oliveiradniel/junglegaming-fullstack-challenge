@@ -51,8 +51,8 @@ export function TaskDeletionAuditLogTable() {
         {!isTaskDeletionAuditLogsLoading && (
           <TableBody>
             {taskDeletionAuditLogsList.map(
-              ({ taskTitle, authorData, oldValue, changedAt }) => {
-                const taskData = JSON.parse(oldValue!) as Task;
+              ({ taskTitle, authorData, values, changedAt }) => {
+                const taskData = JSON.parse(values!) as Task;
 
                 return (
                   <TableRow>
