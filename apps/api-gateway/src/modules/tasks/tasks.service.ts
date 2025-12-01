@@ -50,6 +50,14 @@ export class TasksService {
     return data;
   }
 
+  async listTasksByUserId(userId: string): Promise<Task[]> {
+    const { data } = await firstValueFrom(
+      this.httpService.get<Task[]>(`${this.baseURL}/user/${userId}`),
+    );
+
+    return data;
+  }
+
   async create(dataToCreate: CreateTaskData): Promise<Task> {
     const { authorId, title, description, term, priority, status } =
       dataToCreate;
