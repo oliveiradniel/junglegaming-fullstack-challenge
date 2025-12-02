@@ -8,6 +8,8 @@ import { BookOpenText } from 'lucide-react';
 import { DataTable } from '@/view/components/data-table';
 import { EmptyData } from '@/view/components/empty-data';
 import { Button } from '@/view/components/ui/button';
+import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table/data-table-columns-visibility-dropdown';
+import { DataTableContent } from '@/view/components/data-table/data-table-content';
 
 export function TaskDeletionAuditLogTable() {
   const { taskDeletionAuditLogsList, isTaskDeletionAuditLogsLoading } =
@@ -44,7 +46,16 @@ export function TaskDeletionAuditLogTable() {
           'Data/hora da exclusão',
         ]}
         isLoading={isTaskDeletionAuditLogsLoading}
-      />
+      >
+        {taskDeletionAuditLogsList.length > 0 && (
+          <div className="mb-8 flex justify-end">
+            <DataTableColumnsVisibilityDropdown />
+          </div>
+        )}
+
+        {!isTaskDeletionAuditLogsLoading &&
+          taskDeletionAuditLogsList.length > 0 && <DataTableContent />}
+      </DataTable>
     </>
   );
 }

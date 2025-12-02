@@ -8,6 +8,8 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/view/components/ui/button';
 import { DataTable } from '@/view/components/data-table';
 import { EmptyData } from '@/view/components/empty-data';
+import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table/data-table-columns-visibility-dropdown';
+import { DataTableContent } from '@/view/components/data-table/data-table-content';
 
 export function TaskCreationAuditLogTable() {
   const { handleOpenNewTaskSheet } = useTasks();
@@ -47,7 +49,16 @@ export function TaskCreationAuditLogTable() {
           'Data/hora da criação',
         ]}
         isLoading={isTaskCreationAuditLogsLoading}
-      />
+      >
+        {taskCreationAuditLogsList.length > 0 && (
+          <div className="mb-8 flex justify-end">
+            <DataTableColumnsVisibilityDropdown />
+          </div>
+        )}
+
+        {!isTaskCreationAuditLogsLoading &&
+          taskCreationAuditLogsList.length > 0 && <DataTableContent />}
+      </DataTable>
     </div>
   );
 }

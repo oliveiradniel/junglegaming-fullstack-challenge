@@ -9,6 +9,8 @@ import { cn } from '@/lib/utils';
 import { DataTable } from '@/view/components/data-table';
 import { EmptyData } from '@/view/components/empty-data';
 import { Button } from '@/view/components/ui/button';
+import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table/data-table-columns-visibility-dropdown';
+import { DataTableContent } from '@/view/components/data-table/data-table-content';
 
 export function TaskUpdateAuditLogTable() {
   const { taskUpdateAuditLogsList, isTaskUpdateAuditLogsLoading } =
@@ -54,7 +56,16 @@ export function TaskUpdateAuditLogTable() {
           'Data/horário da atualização',
         ]}
         isLoading={isTaskUpdateAuditLogsLoading}
-      />
+      >
+        {taskUpdateAuditLogsList.length > 0 && (
+          <div className="mb-8 flex justify-end">
+            <DataTableColumnsVisibilityDropdown />
+          </div>
+        )}
+
+        {!isTaskUpdateAuditLogsLoading &&
+          taskUpdateAuditLogsList.length > 0 && <DataTableContent />}
+      </DataTable>
     </>
   );
 }

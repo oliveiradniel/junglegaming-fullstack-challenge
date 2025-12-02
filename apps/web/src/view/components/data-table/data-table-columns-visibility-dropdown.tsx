@@ -1,3 +1,5 @@
+import { useDataTable } from './use-data-table';
+
 import { Settings2Icon } from 'lucide-react';
 
 import {
@@ -8,13 +10,9 @@ import {
 } from '../ui/dropdown-menu';
 import { Button } from '../ui/button';
 
-import { type Table } from '@tanstack/react-table';
+export function DataTableColumnsVisibilityDropdown() {
+  const { table } = useDataTable();
 
-export function DataTableColumnsVisibilityDropdown({
-  table,
-}: {
-  table: Table<any>;
-}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

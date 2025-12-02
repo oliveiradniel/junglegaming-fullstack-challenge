@@ -1,23 +1,14 @@
 import {
-  flexRender,
   getCoreRowModel,
   useReactTable,
   type ColumnDef,
 } from '@tanstack/react-table';
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '../ui/table';
-import { Skeleton } from '../ui/skeleton';
-
-import { DataTableColumnsVisibilityDropdown } from './data-table-columns-visibility-dropdown';
+import { DataTableContext } from './data-table-context';
+import { DataTableFallback } from './data-table-fallback';
 
 interface DataTableProps<TData> {
+  children: React.ReactNode;
   data: TData[];
   columns: ColumnDef<TData>[];
   fallbackColumns: string[];
@@ -25,6 +16,7 @@ interface DataTableProps<TData> {
 }
 
 export function DataTable<TData>({
+  children,
   data,
   columns,
   fallbackColumns,
@@ -37,72 +29,10 @@ export function DataTable<TData>({
   });
 
   return (
-    <div>
-      {data.length > 0 && (
-        <div className="mb-8 flex justify-end">
-          <DataTableColumnsVisibilityDropdown table={table} />
-        </div>
-      )}
+    <DataTableContext.Provider value={{ table }}>
+      {isLoading && <DataTableFallback fallbackColumns={fallbackColumns} />}
 
-      {isLoading && (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {fallbackColumns.map((fallbackColumn, index) => (
-                <TableHead key={index}>{fallbackColumn}</TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-
-          <TableBody>
-            {Array.from({ length: 10 }).map((_, rowIndex) => (
-              <TableRow key={rowIndex}>
-                {fallbackColumns.map((_, cellIndex) => (
-                  <TableCell key={cellIndex}>
-                    <Skeleton className="h-10" />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      )}
-
-      {!isLoading && data.length > 0 && (
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {!header.isPlaceholder &&
-                      flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {!isLoading &&
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      )}
-    </div>
+      {children}
+    </DataTableContext.Provider>
   );
 }
