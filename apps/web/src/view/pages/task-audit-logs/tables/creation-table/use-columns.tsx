@@ -56,6 +56,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
         header: 'Valores na criação',
         cell: ({ row }) => {
           const values = JSON.parse(row.original.values);
+          const thisTaskDeleted = deletedTaskIds.includes(row.original.taskId);
 
           return (
             <Popover>
@@ -67,7 +68,6 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
                   Veja os valores
                 </Button>
               </PopoverTrigger>
-
               <PopoverContent>
                 <div className="flex items-center justify-between text-sm">
                   <span>Título:</span>
@@ -112,11 +112,12 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
                 </div>
 
                 <Button
-                  disabled={isTaskDeletionAuditLogsLoading}
+                  disabled={isTaskDeletionAuditLogsLoading || thisTaskDeleted}
+                  variant={thisTaskDeleted ? 'destructive' : 'default'}
                   className="mt-4 w-full"
                 >
                   <Link to="/tasks/$taskId" params={{ taskId: values.id }}>
-                    Ver informações
+                    {thisTaskDeleted ? 'Indisponível' : 'Ver informações'}
                   </Link>
                 </Button>
               </PopoverContent>
