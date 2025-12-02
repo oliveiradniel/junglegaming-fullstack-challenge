@@ -10,6 +10,7 @@ import { EmptyData } from '@/view/components/empty-data';
 import { Button } from '@/view/components/ui/button';
 import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table/data-table-columns-visibility-dropdown';
 import { DataTableContent } from '@/view/components/data-table/data-table-content';
+import { DataTableFallback } from '@/view/components/data-table/data-table-fallback';
 
 export function TaskDeletionAuditLogTable() {
   const { taskDeletionAuditLogsList, isTaskDeletionAuditLogsLoading } =
@@ -36,17 +37,18 @@ export function TaskDeletionAuditLogTable() {
           </EmptyData>
         )}
 
-      <DataTable
-        data={taskDeletionAuditLogsList}
-        columns={columns}
-        fallbackColumns={[
-          'Autor',
-          'Título',
-          'Valores na exclusão',
-          'Data/hora da exclusão',
-        ]}
-        isLoading={isTaskDeletionAuditLogsLoading}
-      >
+      {isTaskDeletionAuditLogsLoading && (
+        <DataTableFallback
+          fallbackColumns={[
+            'Autor',
+            'Título',
+            'Valores na exclusão',
+            'Data/hora da exclusão',
+          ]}
+        />
+      )}
+
+      <DataTable data={taskDeletionAuditLogsList} columns={columns}>
         {taskDeletionAuditLogsList.length > 0 && (
           <div className="mb-8 flex justify-end">
             <DataTableColumnsVisibilityDropdown />

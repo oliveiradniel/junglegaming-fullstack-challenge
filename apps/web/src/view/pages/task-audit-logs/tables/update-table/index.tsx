@@ -11,6 +11,7 @@ import { EmptyData } from '@/view/components/empty-data';
 import { Button } from '@/view/components/ui/button';
 import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table/data-table-columns-visibility-dropdown';
 import { DataTableContent } from '@/view/components/data-table/data-table-content';
+import { DataTableFallback } from '@/view/components/data-table/data-table-fallback';
 
 export function TaskUpdateAuditLogTable() {
   const { taskUpdateAuditLogsList, isTaskUpdateAuditLogsLoading } =
@@ -44,19 +45,20 @@ export function TaskUpdateAuditLogTable() {
           </EmptyData>
         )}
 
-      <DataTable
-        data={taskUpdateAuditLogsList}
-        columns={columns}
-        fallbackColumns={[
-          'Autor',
-          'Título',
-          'Campo',
-          'Valor antigo',
-          'Valor atual',
-          'Data/horário da atualização',
-        ]}
-        isLoading={isTaskUpdateAuditLogsLoading}
-      >
+      {isTaskUpdateAuditLogsLoading && (
+        <DataTableFallback
+          fallbackColumns={[
+            'Autor',
+            'Título',
+            'Campo',
+            'Valor antigo',
+            'Valor atual',
+            'Data/horário da atualização',
+          ]}
+        />
+      )}
+
+      <DataTable data={taskUpdateAuditLogsList} columns={columns}>
         {taskUpdateAuditLogsList.length > 0 && (
           <div className="mb-8 flex justify-end">
             <DataTableColumnsVisibilityDropdown />

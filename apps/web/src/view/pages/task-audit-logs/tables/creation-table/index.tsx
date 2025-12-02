@@ -10,6 +10,7 @@ import { DataTable } from '@/view/components/data-table';
 import { EmptyData } from '@/view/components/empty-data';
 import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table/data-table-columns-visibility-dropdown';
 import { DataTableContent } from '@/view/components/data-table/data-table-content';
+import { DataTableFallback } from '@/view/components/data-table/data-table-fallback';
 
 export function TaskCreationAuditLogTable() {
   const { handleOpenNewTaskSheet } = useTasks();
@@ -39,17 +40,18 @@ export function TaskCreationAuditLogTable() {
           </EmptyData>
         )}
 
-      <DataTable
-        data={taskCreationAuditLogsList}
-        columns={columns}
-        fallbackColumns={[
-          'Autor',
-          'Título',
-          'Valores na criação',
-          'Data/hora da criação',
-        ]}
-        isLoading={isTaskCreationAuditLogsLoading}
-      >
+      {isTaskCreationAuditLogsLoading && (
+        <DataTableFallback
+          fallbackColumns={[
+            'Autor',
+            'Título',
+            'Valores na criação',
+            'Data/hora da criação',
+          ]}
+        />
+      )}
+
+      <DataTable data={taskCreationAuditLogsList} columns={columns}>
         {taskCreationAuditLogsList.length > 0 && (
           <div className="mb-8 flex justify-end">
             <DataTableColumnsVisibilityDropdown />
