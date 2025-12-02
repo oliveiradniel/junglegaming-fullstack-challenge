@@ -62,7 +62,7 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
         header: 'Campo',
         cell: ({ row }) => fieldLabels[row.original.fieldName as FieldName],
         meta: {
-          nameInFilters: 'Título',
+          nameInFilters: 'Campo',
         },
       },
       {
