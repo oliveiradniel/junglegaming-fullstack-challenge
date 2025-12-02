@@ -8,7 +8,7 @@ export function Layout() {
     <SidebarProvider>
       <AppSidebar />
 
-      <main className="w-full">
+      <main className="w-full overflow-x-hidden">
         <SidebarTrigger />
         <Outlet />
       </main>
