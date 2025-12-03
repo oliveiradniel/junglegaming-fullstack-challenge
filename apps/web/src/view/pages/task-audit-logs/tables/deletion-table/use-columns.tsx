@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 import { cn } from '@/lib/utils';
 import { truncateString } from '@/app/utils/truncate-string';
@@ -7,6 +8,8 @@ import {
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
 import { priorityLabels, statusLabels } from '@/config/labels';
+
+import { EllipsisIcon, Trash2Icon } from 'lucide-react';
 
 import { Button } from '@/view/components/ui/button';
 import {
@@ -20,8 +23,15 @@ import type { ColumnDef } from '@tanstack/react-table';
 import type { TaskPriority } from '@/app/enums/TaskPriority';
 import type { TaskStatus } from '@/app/enums/TaskStatus';
 import type { ListDeletionTaskAuditLogWithAuthorData } from '@challenge/shared';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/view/components/ui/dropdown-menu';
 
 export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[] {
+  const { handleOpenDeleteTaskDialog } = useTaskAuditLog();
+
   return useMemo<ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[]>(
     () => [
       {
@@ -115,6 +125,39 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
         cell: ({ row }) => formatDateToBRWithHour(row.original.changedAt),
         meta: {
           nameInFilters: 'Data/horário',
+        },
+      },
+      {
+        id: 'Actions',
+        enableHiding: false,
+        cell: ({ row }) => {
+          return (
+            <div className="flex justify-end">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Button variant="ghost" size="sm">
+                    <EllipsisIcon className="size-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+
+                <DropdownMenuContent align="end">
+                  <Button
+                    variant="ghost"
+                    onClick={() =>
+                      handleOpenDeleteTaskDialog({
+                        selectedLogId: row.original.id,
+                        type: 'deletion',
+                      })
+                    }
+                    className="flex w-full items-center gap-2 font-normal"
+                  >
+                    <Trash2Icon className="size-4 text-red-400" />
+                    Excluir log
+                  </Button>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          );
         },
       },
     ],
