@@ -1,4 +1,11 @@
-import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 
 import { TaskAuditLogsService } from './task-audit-logs.service';
 
@@ -39,5 +46,11 @@ export class TaskAuditLogsController {
     ListDeletionTaskAuditLogWithAuthorData[]
   > {
     return this.taskAuditLogsService.listTaskDeletionAuditLog();
+  }
+
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  delete(@Param('id') id: string): Promise<void> {
+    return this.taskAuditLogsService.delete(id);
   }
 }
