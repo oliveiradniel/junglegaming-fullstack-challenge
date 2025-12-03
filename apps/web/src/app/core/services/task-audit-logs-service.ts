@@ -36,4 +36,8 @@ export class TaskAuditLogsService implements ITaskAuditLogsService {
   ): Promise<ListDeletionTaskAuditLogWithAuthorData[]> {
     return this.httpClient.get('/task-audit-logs/deletion', config);
   }
+
+  delete(id: string, config?: HttpRequestConfig): Promise<void> {
+    return this.httpClient.delete(`/task-audit-logs/${id}`, config);
+  }
 }

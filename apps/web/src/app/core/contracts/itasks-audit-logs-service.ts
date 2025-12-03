@@ -18,4 +18,5 @@ export abstract class ITaskAuditLogsService {
   abstract listTaskDeletionAuditLog(
     config?: HttpRequestConfig,
   ): Promise<ListDeletionTaskAuditLogWithAuthorData[]>;
+  abstract delete(id: string, config?: HttpRequestConfig): Promise<void>;
 }
