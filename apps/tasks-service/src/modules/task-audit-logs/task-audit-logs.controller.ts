@@ -1,4 +1,11 @@
-import { Controller, Get, HttpCode, HttpStatus, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 
 import { TaskAuditLogsService } from './task-audit-logs.service';
 
@@ -37,17 +44,9 @@ export class TaskAuditLogsController {
     return this.taskAuditLogsService.listTaskDeletionAuditLog();
   }
 
-  // @HttpCode(HttpStatus.OK)
-  // @Get()
-  // list(
-  //   @Query() queryParams: TaskAuditLogFiltersQueryParam,
-  // ): Promise<TaskAuditLog[]> {
-  //   const { taskId, userId, fieldName } = queryParams;
-
-  //   return this.taskAuditLogsService.list({
-  //     task: taskId ? { id: taskId } : undefined,
-  //     userId,
-  //     fieldName,
-  //   });
-  // }
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Delete(':id')
+  async delete(@Param('id') id: string) {
+    await this.taskAuditLogsService.delete(id);
+  }
 }
