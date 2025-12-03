@@ -113,6 +113,12 @@ export class TaskAuditLogsService {
     return datadWithAuthorData;
   }
 
+  async delete(id: string): Promise<void> {
+    await firstValueFrom(
+      this.httpService.delete<void>(`${this.baseURL}/${id}`),
+    );
+  }
+
   private safeParseIds(value: string | null | undefined): string[] {
     if (!value) return [];
 
