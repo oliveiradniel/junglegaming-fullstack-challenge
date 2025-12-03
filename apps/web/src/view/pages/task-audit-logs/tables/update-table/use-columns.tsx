@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 
 import { useMemo } from 'react';
 import { useListTaskDeletionAuditLogQuery } from '@/app/hooks/queries/use-list-task-deletion-audit-log-query';
+import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 import { cn } from '@/lib/utils';
 import { truncateString } from '@/app/utils/truncate-string';
@@ -10,7 +11,8 @@ import {
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
 import { fieldLabels, priorityLabels, statusLabels } from '@/config/labels';
-import { EllipsisIcon, InfoIcon, XIcon } from 'lucide-react';
+
+import { EllipsisIcon, InfoIcon, Trash2Icon } from 'lucide-react';
 
 import { Button } from '@/view/components/ui/button';
 import {
@@ -34,6 +36,8 @@ import {
 
 export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] {
   const { taskDeletionAuditLogsList } = useListTaskDeletionAuditLogQuery();
+
+  const { handleOpenDeleteTaskDialog } = useTaskAuditLog();
 
   const deletedTaskIds = taskDeletionAuditLogsList.map((log) => log.taskId);
 
@@ -261,32 +265,36 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
 
                 <DropdownMenuContent align="end">
                   <div>
-                    <Button
-                      asChild
-                      variant="ghost"
-                      disabled={thisTaskDeleted}
-                      className={cn(
-                        'w-full font-normal',
-                        thisTaskDeleted && 'text-destructive! bg-transparent!',
-                      )}
-                    >
-                      <Link
-                        to="/tasks/$taskId"
-                        params={{ taskId: row.original.taskId }}
-                        className={cn(thisTaskDeleted && 'cursor-default')}
+                    {!thisTaskDeleted && (
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className={cn('w-full font-normal')}
                       >
-                        {thisTaskDeleted ? (
-                          <div className="flex items-center gap-2">
-                            <XIcon />
-                            Indisponível
-                          </div>
-                        ) : (
+                        <Link
+                          to="/tasks/$taskId"
+                          params={{ taskId: row.original.taskId }}
+                        >
                           <div className="flex items-center gap-2">
                             <InfoIcon className="size-4 text-blue-400" />
                             Ver tarefa
                           </div>
-                        )}
-                      </Link>
+                        </Link>
+                      </Button>
+                    )}
+
+                    <Button
+                      variant="ghost"
+                      onClick={() =>
+                        handleOpenDeleteTaskDialog({
+                          selectedLogId: row.original.id,
+                          type: 'update',
+                        })
+                      }
+                      className="flex w-full items-center gap-2 font-normal"
+                    >
+                      <Trash2Icon className="size-4 text-red-400" />
+                      Excluir log
                     </Button>
                   </div>
                 </DropdownMenuContent>
