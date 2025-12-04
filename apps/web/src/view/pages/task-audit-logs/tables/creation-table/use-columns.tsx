@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router';
 
 import { useMemo } from 'react';
 import { useListTaskDeletionAuditLogQuery } from '@/app/hooks/queries/use-list-task-deletion-audit-log-query';
+import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 import { cn } from '@/lib/utils';
 import { truncateString } from '@/app/utils/truncate-string';
@@ -30,7 +31,6 @@ import type { ColumnDef } from '@tanstack/react-table';
 import type { TaskPriority } from '@/app/enums/TaskPriority';
 import type { TaskStatus } from '@/app/enums/TaskStatus';
 import type { ListCreationTaskAuditLogWithAuthorData } from '@challenge/shared';
-import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[] {
   const { taskDeletionAuditLogsList, isTaskDeletionAuditLogsLoading } =
@@ -43,7 +43,9 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
   return useMemo<ColumnDef<ListCreationTaskAuditLogWithAuthorData>[]>(
     () => [
       {
-        accessorKey: 'authorData',
+        id: 'author',
+        accessorFn: (row) =>
+          `${row.authorData.username} ${row.authorData.email}`,
         header: 'Autor',
         cell: ({ row }) => (
           <div className="flex flex-col">
@@ -68,6 +70,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
       {
         accessorKey: 'values',
         header: 'Valores na criação',
+        enableGlobalFilter: false,
         cell: ({ row }) => {
           const values = JSON.parse(row.original.values);
           const thisTaskDeleted = deletedTaskIds.includes(row.original.taskId);
@@ -145,6 +148,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
       {
         accessorKey: 'changedAt',
         header: 'Data/horário da criação',
+        enableGlobalFilter: false,
         cell: ({ row }) => formatDateToBRWithHour(row.original.changedAt),
         meta: {
           nameInFilters: 'Data/horário',
@@ -153,6 +157,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
       {
         id: 'Actions',
         enableHiding: false,
+        enableGlobalFilter: false,
         cell: ({ row }) => {
           const thisTaskDeleted = deletedTaskIds.includes(row.original.taskId);
 
