@@ -44,7 +44,9 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
   return useMemo<ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[]>(
     () => [
       {
-        accessorKey: 'authorData',
+        id: 'author',
+        accessorFn: (row) =>
+          `${row.authorData.username} ${row.authorData.email}`,
         header: 'Autor',
         cell: ({ row }) => (
           <div className="flex flex-col">
@@ -242,6 +244,7 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
       },
       {
         accessorKey: 'changedAt',
+        enableGlobalFilter: false,
         header: 'Data/horário da atualização',
         cell: ({ row }) => formatDateToBRWithHour(row.original.changedAt),
         meta: {
@@ -251,6 +254,7 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
       {
         id: 'Actions',
         enableHiding: false,
+        enableGlobalFilter: false,
         cell: ({ row }) => {
           const thisTaskDeleted = deletedTaskIds.includes(row.original.taskId);
 
