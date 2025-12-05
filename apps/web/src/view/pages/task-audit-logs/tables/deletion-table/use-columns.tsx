@@ -35,7 +35,9 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
   return useMemo<ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[]>(
     () => [
       {
-        accessorKey: 'authorData',
+        id: 'author',
+        accessorFn: (row) =>
+          `${row.authorData.username} ${row.authorData.email}`,
         header: 'Autor',
         cell: ({ row }) => (
           <div className="flex flex-col">
@@ -59,6 +61,7 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
       },
       {
         accessorKey: 'values',
+        enableColumnFilter: false,
         header: 'Valores na exclusão',
         cell: ({ row }) => {
           const values = JSON.parse(row.original.values);
@@ -121,6 +124,7 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
       },
       {
         accessorKey: 'changedAt',
+        enableColumnFilter: false,
         header: 'Data/horário da exclusão',
         cell: ({ row }) => formatDateToBRWithHour(row.original.changedAt),
         meta: {
@@ -130,6 +134,7 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
       {
         id: 'Actions',
         enableHiding: false,
+        enableColumnFilter: false,
         cell: ({ row }) => {
           return (
             <div className="flex justify-end">

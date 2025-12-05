@@ -6,6 +6,7 @@ import { DataTableColumnsVisibilityDropdown } from '@/view/components/data-table
 import { DataTableContent } from '@/view/components/data-table/data-table-content';
 import { DataTableFallback } from '@/view/components/data-table/data-table-fallback';
 import { EmptyLog } from './empty-log';
+import { DataTableTextFilter } from '@/view/components/data-table/data-table-text-filter';
 
 export function TaskDeletionAuditLogTable() {
   const { taskDeletionAuditLogsList, isTaskDeletionAuditLogsLoading } =
@@ -31,7 +32,9 @@ export function TaskDeletionAuditLogTable() {
 
       <DataTable data={taskDeletionAuditLogsList} columns={columns}>
         {taskDeletionAuditLogsList.length > 0 && (
-          <div className="mb-8 flex justify-end">
+          <div className="flex items-center gap-4">
+            <DataTableTextFilter placeholder="Procurar por autor ou título" />
+
             <DataTableColumnsVisibilityDropdown />
           </div>
         )}
