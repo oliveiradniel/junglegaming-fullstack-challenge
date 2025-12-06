@@ -10,7 +10,7 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { priorityLabels, statusLabels } from '@/config/labels';
+import { statusLabels } from '@/config/labels';
 
 import { EllipsisIcon, InfoIcon, Trash2Icon } from 'lucide-react';
 
@@ -27,9 +27,9 @@ import {
   DropdownMenuTrigger,
 } from '@/view/components/ui/dropdown-menu';
 import { AuthorCell } from '../../author-cell';
+import { PriorityBadge } from '@/view/components/ui/priority-badge';
 
 import type { ColumnDef } from '@tanstack/react-table';
-import type { TaskPriority } from '@/app/enums/TaskPriority';
 import type { TaskStatus } from '@/app/enums/TaskStatus';
 import type { ListCreationTaskAuditLogWithAuthorData } from '@challenge/shared';
 
@@ -97,17 +97,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
                 </span>
 
                 <div className="mt-2 flex items-center gap-2">
-                  <span
-                    className={cn(
-                      'rounded-md px-3 py-2 text-sm font-medium text-white',
-                      values.priority === 'LOW' && 'bg-green-400',
-                      values.priority === 'MEDIUM' && 'bg-blue-400',
-                      values.priority === 'HIGH' && 'bg-yellow-400',
-                      values.priority === 'URGENT' && 'bg-red-400',
-                    )}
-                  >
-                    {priorityLabels[values.priority as TaskPriority]}
-                  </span>
+                  <PriorityBadge priority={values.priority} />
 
                   <span
                     className={cn(

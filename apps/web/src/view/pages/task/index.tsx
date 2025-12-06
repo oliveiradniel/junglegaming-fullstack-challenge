@@ -13,7 +13,7 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { priorityLabels, statusLabels } from '@/config/labels';
+import { statusLabels } from '@/config/labels';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../../components/ui/button';
@@ -34,9 +34,9 @@ import {
   InputGroupTextarea,
 } from '@/view/components/ui/input-group';
 import { UpdateTaskSheet } from '@/view/components/update-task-sheet';
+import { PriorityBadge } from '@/view/components/ui/priority-badge';
 
 import type { TaskStatus } from '@/app/enums/TaskStatus';
-import type { TaskPriority } from '@/app/enums/TaskPriority';
 import {
   Tabs,
   TabsContent,
@@ -182,19 +182,7 @@ export function Task() {
                     Prioridade
                   </span>
 
-                  <div
-                    className={cn(
-                      'flex items-center gap-2 rounded-md px-4 py-2 text-white',
-                      task?.priority === 'LOW' && 'bg-green-400',
-                      task?.priority === 'MEDIUM' && 'bg-blue-400',
-                      task?.priority === 'HIGH' && 'bg-yellow-400',
-                      task?.priority === 'URGENT' && 'bg-red-400',
-                    )}
-                  >
-                    <span className="font-medium">
-                      {priorityLabels[task?.priority as TaskPriority]}
-                    </span>
-                  </div>
+                  <PriorityBadge priority={task?.priority} />
                 </div>
               )}
             </div>

@@ -2,17 +2,17 @@ import { cn } from '@/lib/utils';
 import { formatDateToBR } from '@/app/utils/format-date-br';
 import { truncateString } from '@/app/utils/truncate-string';
 
-import { priorityLabels, statusLabels } from '@/config/labels';
+import { statusLabels } from '@/config/labels';
 
 import { Card, CardDescription, CardTitle } from '@/view/components/ui/card';
-import { CalendarClock, CalendarPlus, Flag, MessageSquare } from 'lucide-react';
+import { CalendarClock, CalendarPlus, MessageSquare } from 'lucide-react';
 
 import { Separator } from '@/view/components/ui/separator';
 import { TaskActionsPopover } from './task-actions-popover';
 
 import type { TaskStatus } from '@/app/enums/TaskStatus';
 import type { TaskWithCommentCount } from '@challenge/shared';
-import type { TaskPriority } from '@/app/enums/TaskPriority';
+import { PriorityBadge } from '@/view/components/ui/priority-badge';
 
 interface TasksCardProps {
   filteredTasksList: TaskWithCommentCount[];
@@ -62,20 +62,7 @@ export function TasksCard({ filteredTasksList }: TasksCardProps) {
                     {statusLabels[status as TaskStatus]}
                   </span>
 
-                  <div
-                    className={cn(
-                      'flex items-center gap-2',
-                      priority === 'LOW' && 'text-green-400',
-                      priority === 'MEDIUM' && 'text-blue-400',
-                      priority === 'HIGH' && 'text-yellow-400',
-                      priority === 'URGENT' && 'text-red-400',
-                    )}
-                  >
-                    <Flag className="size-4" />
-                    <span className="text-xs font-medium">
-                      {priorityLabels[priority as TaskPriority]}
-                    </span>
-                  </div>
+                  <PriorityBadge priority={priority} />
                 </div>
 
                 <Separator className="my-3" />

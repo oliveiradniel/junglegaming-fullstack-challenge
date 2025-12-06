@@ -10,7 +10,7 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { fieldLabels, priorityLabels, statusLabels } from '@/config/labels';
+import { fieldLabels, statusLabels } from '@/config/labels';
 
 import { EllipsisIcon, InfoIcon, Trash2Icon } from 'lucide-react';
 
@@ -34,6 +34,7 @@ import type {
   FieldName,
   ListUpdateTaskAuditLogWithAuthorData,
 } from '@challenge/shared';
+import { PriorityBadge } from '@/view/components/ui/priority-badge';
 
 export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] {
   const { taskDeletionAuditLogsList } = useListTaskDeletionAuditLogQuery();
@@ -80,24 +81,10 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
           const isFieldNameStatus = row.original.fieldName === 'status';
           const isFieldNameUserIds = row.original.fieldName === 'userIds';
 
-          const parsedPriorityOldValue =
-            priorityLabels[oldValue as TaskPriority];
-
           const parsedStatusOldValue = statusLabels[oldValue as TaskStatus];
 
           return isFieldNamePriority ? (
-            <Button
-              disabled
-              className={cn(
-                'rounded-md px-3 py-2 text-sm font-medium text-white opacity-100!',
-                oldValue === 'LOW' && 'bg-green-400',
-                oldValue === 'MEDIUM' && 'bg-blue-400',
-                oldValue === 'HIGH' && 'bg-yellow-400',
-                oldValue === 'URGENT' && 'bg-red-400',
-              )}
-            >
-              {parsedPriorityOldValue}
-            </Button>
+            <PriorityBadge priority={oldValue as TaskPriority} />
           ) : isFieldNameStatus ? (
             <Button
               disabled
@@ -163,24 +150,10 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
           const isFieldNameStatus = row.original.fieldName === 'status';
           const isFieldNameUserIds = row.original.fieldName === 'userIds';
 
-          const parsedPriorityNewValue =
-            priorityLabels[newValue as TaskPriority];
-
           const parsedStatusNewValue = statusLabels[newValue as TaskStatus];
 
           return isFieldNamePriority ? (
-            <Button
-              disabled
-              className={cn(
-                'rounded-md px-3 py-2 text-sm font-medium text-white opacity-100!',
-                newValue === 'LOW' && 'bg-green-400',
-                newValue === 'MEDIUM' && 'bg-blue-400',
-                newValue === 'HIGH' && 'bg-yellow-400',
-                newValue === 'URGENT' && 'bg-red-400',
-              )}
-            >
-              {parsedPriorityNewValue}
-            </Button>
+            <PriorityBadge priority={newValue as TaskPriority} />
           ) : isFieldNameStatus ? (
             <Button
               disabled
