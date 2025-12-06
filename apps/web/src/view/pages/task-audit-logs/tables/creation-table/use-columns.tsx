@@ -26,6 +26,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/view/components/ui/dropdown-menu';
+import { AuthorCell } from '../../author-cell';
 
 import type { ColumnDef } from '@tanstack/react-table';
 import type { TaskPriority } from '@/app/enums/TaskPriority';
@@ -47,14 +48,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
         accessorFn: (row) =>
           `${row.authorData.username} ${row.authorData.email}`,
         header: 'Autor',
-        cell: ({ row }) => (
-          <div className="flex flex-col">
-            <span>{row.original.authorData.username}</span>
-            <span className="text-muted-foreground text-xs">
-              {row.original.authorData.email}
-            </span>
-          </div>
-        ),
+        cell: ({ row }) => <AuthorCell row={row} />,
         meta: {
           nameInFilters: 'Autor',
         },
