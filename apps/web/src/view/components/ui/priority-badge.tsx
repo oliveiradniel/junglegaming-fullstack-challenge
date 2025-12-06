@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import type { TaskPriority } from '@/app/enums/TaskPriority';
 
 export function PriorityBadge({ priority }: { priority: TaskPriority }) {
-  const parsedPriority = priorityLabels[priority as TaskPriority];
+  const parsedPriority = priorityLabels[priority];
 
   return (
     <div
