@@ -13,8 +13,6 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { statusLabels } from '@/config/labels';
-import { cn } from '@/lib/utils';
 
 import { Button } from '../../components/ui/button';
 import { Separator } from '../../components/ui/separator';
@@ -35,8 +33,8 @@ import {
 } from '@/view/components/ui/input-group';
 import { UpdateTaskSheet } from '@/view/components/update-task-sheet';
 import { PriorityBadge } from '@/view/components/ui/priority-badge';
+import { StatusBadge } from '@/view/components/ui/status-badge';
 
-import type { TaskStatus } from '@/app/enums/TaskStatus';
 import {
   Tabs,
   TabsContent,
@@ -160,19 +158,7 @@ export function Task() {
                 <div className="flex flex-col gap-2">
                   <span className="text-muted-foreground text-xs">Status</span>
 
-                  <div
-                    className={cn(
-                      'flex items-center gap-2 rounded-md px-4 py-2 text-white',
-                      task?.status === 'TODO' && 'bg-yellow-400',
-                      task?.status === 'IN_PROGRESS' && 'bg-blue-400',
-                      task?.status === 'REVIEW' && 'bg-purple-400',
-                      task?.status === 'DONE' && 'bg-green-400',
-                    )}
-                  >
-                    <span className="font-medium">
-                      {statusLabels[task?.status as TaskStatus]}
-                    </span>
-                  </div>
+                  <StatusBadge status={task?.status} />
                 </div>
               )}
 

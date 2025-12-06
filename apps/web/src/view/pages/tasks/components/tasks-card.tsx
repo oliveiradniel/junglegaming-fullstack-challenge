@@ -1,18 +1,15 @@
-import { cn } from '@/lib/utils';
 import { formatDateToBR } from '@/app/utils/format-date-br';
 import { truncateString } from '@/app/utils/truncate-string';
-
-import { statusLabels } from '@/config/labels';
 
 import { Card, CardDescription, CardTitle } from '@/view/components/ui/card';
 import { CalendarClock, CalendarPlus, MessageSquare } from 'lucide-react';
 
 import { Separator } from '@/view/components/ui/separator';
 import { TaskActionsPopover } from './task-actions-popover';
-
-import type { TaskStatus } from '@/app/enums/TaskStatus';
-import type { TaskWithCommentCount } from '@challenge/shared';
 import { PriorityBadge } from '@/view/components/ui/priority-badge';
+import { StatusBadge } from '@/view/components/ui/status-badge';
+
+import type { TaskWithCommentCount } from '@challenge/shared';
 
 interface TasksCardProps {
   filteredTasksList: TaskWithCommentCount[];
@@ -50,17 +47,7 @@ export function TasksCard({ filteredTasksList }: TasksCardProps) {
 
               <div>
                 <div className="flex justify-between gap-4">
-                  <span
-                    className={cn(
-                      'rounded-sm p-2 text-xs font-bold text-white',
-                      status === 'TODO' && 'bg-yellow-400',
-                      status === 'IN_PROGRESS' && 'bg-blue-400',
-                      status === 'REVIEW' && 'bg-purple-400',
-                      status === 'DONE' && 'bg-green-400',
-                    )}
-                  >
-                    {statusLabels[status as TaskStatus]}
-                  </span>
+                  <StatusBadge status={status} />
 
                   <PriorityBadge priority={priority} />
                 </div>

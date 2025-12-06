@@ -10,7 +10,7 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { fieldLabels, statusLabels } from '@/config/labels';
+import { fieldLabels } from '@/config/labels';
 
 import { EllipsisIcon, InfoIcon, Trash2Icon } from 'lucide-react';
 
@@ -35,6 +35,7 @@ import type {
   ListUpdateTaskAuditLogWithAuthorData,
 } from '@challenge/shared';
 import { PriorityBadge } from '@/view/components/ui/priority-badge';
+import { StatusBadge } from '@/view/components/ui/status-badge';
 
 export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] {
   const { taskDeletionAuditLogsList } = useListTaskDeletionAuditLogQuery();
@@ -81,23 +82,10 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
           const isFieldNameStatus = row.original.fieldName === 'status';
           const isFieldNameUserIds = row.original.fieldName === 'userIds';
 
-          const parsedStatusOldValue = statusLabels[oldValue as TaskStatus];
-
           return isFieldNamePriority ? (
             <PriorityBadge priority={oldValue as TaskPriority} />
           ) : isFieldNameStatus ? (
-            <Button
-              disabled
-              className={cn(
-                'rounded-md px-3 py-2 text-sm font-medium text-white opacity-100!',
-                oldValue === 'TODO' && 'bg-yellow-400',
-                oldValue === 'IN_PROGRESS' && 'bg-blue-400',
-                oldValue === 'REVIEW' && 'bg-purple-400',
-                oldValue === 'DONE' && 'bg-green-400',
-              )}
-            >
-              {parsedStatusOldValue}
-            </Button>
+            <StatusBadge status={oldValue as TaskStatus} />
           ) : isFieldNameUserIds && Array.isArray(oldValue) ? (
             oldValue.length > 0 ? (
               <Popover>
@@ -150,23 +138,10 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
           const isFieldNameStatus = row.original.fieldName === 'status';
           const isFieldNameUserIds = row.original.fieldName === 'userIds';
 
-          const parsedStatusNewValue = statusLabels[newValue as TaskStatus];
-
           return isFieldNamePriority ? (
             <PriorityBadge priority={newValue as TaskPriority} />
           ) : isFieldNameStatus ? (
-            <Button
-              disabled
-              className={cn(
-                'rounded-md px-3 py-2 text-sm font-medium text-white opacity-100!',
-                newValue === 'TODO' && 'bg-yellow-400',
-                newValue === 'IN_PROGRESS' && 'bg-blue-400',
-                newValue === 'REVIEW' && 'bg-purple-400',
-                newValue === 'DONE' && 'bg-green-400',
-              )}
-            >
-              {parsedStatusNewValue}
-            </Button>
+            <StatusBadge status={newValue as TaskStatus} />
           ) : isFieldNameUserIds && Array.isArray(newValue) ? (
             newValue.length > 0 ? (
               <Popover>

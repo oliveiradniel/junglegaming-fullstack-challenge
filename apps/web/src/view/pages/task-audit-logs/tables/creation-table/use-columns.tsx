@@ -10,7 +10,6 @@ import {
   formatDateToBR,
   formatDateToBRWithHour,
 } from '@/app/utils/format-date-br';
-import { statusLabels } from '@/config/labels';
 
 import { EllipsisIcon, InfoIcon, Trash2Icon } from 'lucide-react';
 
@@ -28,9 +27,9 @@ import {
 } from '@/view/components/ui/dropdown-menu';
 import { AuthorCell } from '../../author-cell';
 import { PriorityBadge } from '@/view/components/ui/priority-badge';
+import { StatusBadge } from '@/view/components/ui/status-badge';
 
 import type { ColumnDef } from '@tanstack/react-table';
-import type { TaskStatus } from '@/app/enums/TaskStatus';
 import type { ListCreationTaskAuditLogWithAuthorData } from '@challenge/shared';
 
 export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[] {
@@ -99,17 +98,7 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
                 <div className="mt-2 flex items-center gap-2">
                   <PriorityBadge priority={values.priority} />
 
-                  <span
-                    className={cn(
-                      'rounded-md px-3 py-2 text-sm font-medium text-white',
-                      values.status === 'TODO' && 'bg-yellow-400',
-                      values.status === 'IN_PROGRESS' && 'bg-blue-400',
-                      values.status === 'REVIEW' && 'bg-purple-400',
-                      values.status === 'DONE' && 'bg-green-400',
-                    )}
-                  >
-                    {statusLabels[values.status as TaskStatus]}
-                  </span>
+                  <StatusBadge status={values.status} />
                 </div>
 
                 <Button
