@@ -1,10 +1,14 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
 
 import type { ITaskAuditLogsRepository } from 'src/database/contracts/task-audit-logs.contract';
 
 import { CreateTaskAuditLogData } from './types/create-task-audit-log-data.type';
 
-import { TASK_AUDIT_LOGS_REPOSITORY } from 'src/shared/constants/tokens';
+import {
+  NOTIFICATIONS_SERVICE_RMQ,
+  TASK_AUDIT_LOGS_REPOSITORY,
+} from 'src/shared/constants/tokens';
 
 import {
   ListCreationTaskAuditLog,
@@ -18,6 +22,8 @@ export class TaskAuditLogsService {
   constructor(
     @Inject(TASK_AUDIT_LOGS_REPOSITORY)
     private readonly taskAuditLogsRepository: ITaskAuditLogsRepository,
+    @Inject(NOTIFICATIONS_SERVICE_RMQ)
+    private readonly notificationsClient: ClientProxy,
   ) {}
 
   list(): Promise<TaskAuditLog[]> {
@@ -52,15 +58,21 @@ export class TaskAuditLogsService {
   }
 
   async delete(id: string) {
-    await this.verifyTaskAuditLogExists(id);
+    const auditLog = await this.verifyTaskAuditLogExists(id);
 
     await this.taskAuditLogsRepository.delete(id);
+
+    this.notificationsClient.emit('task-audit-log.deleted', {
+      action: auditLog.action,
+    });
   }
 
-  private async verifyTaskAuditLogExists(id: string) {
+  private async verifyTaskAuditLogExists(id: string): Promise<TaskAuditLog> {
     const taskAuditLog = await this.taskAuditLogsRepository.getById(id);
     if (!taskAuditLog) {
       throw new NotFoundException('Task audit log not found.');
     }
+
+    return taskAuditLog;
   }
 }
