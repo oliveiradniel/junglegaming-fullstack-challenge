@@ -2,28 +2,18 @@ import { useMemo } from 'react';
 import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 import { truncateString } from '@/app/utils/truncate-string';
-import {
-  formatDateToBR,
-  formatDateToBRWithHour,
-} from '@/app/utils/format-date-br';
+import { formatDateToBRWithHour } from '@/app/utils/format-date-br';
 
 import { EllipsisIcon, Trash2Icon } from 'lucide-react';
 
 import { Button } from '@/view/components/ui/button';
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from '@/view/components/ui/popover';
-import { Separator } from '@/view/components/ui/separator';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/view/components/ui/dropdown-menu';
 import { AuthorCell } from '../../author-cell';
-import { PriorityBadge } from '@/view/components/ui/priority-badge';
-import { StatusBadge } from '@/view/components/ui/status-badge';
+import { TaskDetailsPopover } from '../../task-details-popover';
 
 import type { ColumnDef } from '@tanstack/react-table';
 import type { ListDeletionTaskAuditLogWithAuthorData } from '@challenge/shared';
@@ -58,37 +48,7 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
         cell: ({ row }) => {
           const values = JSON.parse(row.original.values);
 
-          return (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">Veja os valores</Button>
-              </PopoverTrigger>
-
-              <PopoverContent>
-                <div className="flex items-center justify-between text-sm">
-                  <span>Título:</span>
-                  <span>{truncateString(values.title, 20)}</span>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <span>Descrição:</span>
-                  <span>{truncateString(values.description, 20)}</span>
-                </div>
-
-                <Separator className="my-2" />
-
-                <span className="text-sm">
-                  Prazo: {formatDateToBR(values.term)}
-                </span>
-
-                <div className="mt-2 flex items-center gap-2">
-                  <PriorityBadge priority={values.priority} />
-
-                  <StatusBadge status={values.status} />
-                </div>
-              </PopoverContent>
-            </Popover>
-          );
+          return <TaskDetailsPopover values={values} />;
         },
         meta: {
           nameInFilters: 'Valores',

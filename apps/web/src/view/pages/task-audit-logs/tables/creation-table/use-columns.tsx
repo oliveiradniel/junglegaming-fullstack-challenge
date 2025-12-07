@@ -6,28 +6,18 @@ import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 import { cn } from '@/lib/utils';
 import { truncateString } from '@/app/utils/truncate-string';
-import {
-  formatDateToBR,
-  formatDateToBRWithHour,
-} from '@/app/utils/format-date-br';
+import { formatDateToBRWithHour } from '@/app/utils/format-date-br';
 
 import { EllipsisIcon, InfoIcon, Trash2Icon } from 'lucide-react';
 
 import { Button } from '@/view/components/ui/button';
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from '@/view/components/ui/popover';
-import { Separator } from '@/view/components/ui/separator';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/view/components/ui/dropdown-menu';
 import { AuthorCell } from '../../author-cell';
-import { PriorityBadge } from '@/view/components/ui/priority-badge';
-import { StatusBadge } from '@/view/components/ui/status-badge';
+import { TaskDetailsPopover } from '../../task-details-popover';
 
 import type { ColumnDef } from '@tanstack/react-table';
 import type { ListCreationTaskAuditLogWithAuthorData } from '@challenge/shared';
@@ -69,49 +59,20 @@ export function useColumns(): ColumnDef<ListCreationTaskAuditLogWithAuthorData>[
           const thisTaskDeleted = deletedTaskIds.includes(row.original.taskId);
 
           return (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  disabled={isTaskDeletionAuditLogsLoading}
-                >
-                  Veja os valores
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent>
-                <div className="flex items-center justify-between text-sm">
-                  <span>Título:</span>
-                  <span>{truncateString(values.title, 20)}</span>
-                </div>
-
-                <div className="flex items-center justify-between text-sm">
-                  <span>Descrição:</span>
-                  <span>{truncateString(values.description, 20)}</span>
-                </div>
-
-                <Separator className="my-2" />
-
-                <span className="text-sm">
-                  Prazo: {formatDateToBR(values.term)}
-                </span>
-
-                <div className="mt-2 flex items-center gap-2">
-                  <PriorityBadge priority={values.priority} />
-
-                  <StatusBadge status={values.status} />
-                </div>
-
-                <Button
-                  disabled={isTaskDeletionAuditLogsLoading || thisTaskDeleted}
-                  variant={thisTaskDeleted ? 'destructive' : 'default'}
-                  className="mt-4 w-full"
-                >
-                  <Link to="/tasks/$taskId" params={{ taskId: values.id }}>
-                    {thisTaskDeleted ? 'Indisponível' : 'Ver informações'}
-                  </Link>
-                </Button>
-              </PopoverContent>
-            </Popover>
+            <TaskDetailsPopover
+              values={values}
+              isTaskDeletionAuditLogsLoading={isTaskDeletionAuditLogsLoading}
+            >
+              <Button
+                disabled={isTaskDeletionAuditLogsLoading || thisTaskDeleted}
+                variant={thisTaskDeleted ? 'destructive' : 'default'}
+                className="mt-4 w-full"
+              >
+                <Link to="/tasks/$taskId" params={{ taskId: values.id }}>
+                  {thisTaskDeleted ? 'Indisponível' : 'Ver informações'}
+                </Link>
+              </Button>
+            </TaskDetailsPopover>
           );
         },
         meta: {
