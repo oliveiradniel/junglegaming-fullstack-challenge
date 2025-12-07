@@ -101,7 +101,7 @@ export class TasksService {
   async update(id: string, data: UpdateTaskData): Promise<void> {
     const {
       lastEditedBy,
-      userIds,
+      userIds = [],
       title,
       description,
       term,
@@ -130,12 +130,11 @@ export class TasksService {
       task.id,
     );
 
-    const hasAnyUsersForDeletion =
-      userIds && userIds.filter((id) => existingUserIds.includes(id));
+    const hasAnyUsersForDeletion = existingUserIds.some(
+      (id) => !userIds.includes(id),
+    );
 
-    const newUserIds = userIds
-      ? userIds.filter((id) => !existingUserIds.includes(id))
-      : [];
+    const newUserIds = userIds.filter((id) => !existingUserIds.includes(id));
 
     const newUserIdsCount = newUserIds.length;
 
@@ -177,12 +176,7 @@ export class TasksService {
       },
       {
         fieldName: FieldName.USER_IDS,
-        dirty:
-          newUserIdsCount > 0 ||
-          (hasAnyUsersForDeletion
-            ? hasAnyUsersForDeletion.length > 0
-            : false) ||
-          (existingUserIds.length > 0 && userIds?.length === 0),
+        dirty: newUserIdsCount > 0 || hasAnyUsersForDeletion,
         newValue: JSON.stringify([...newUserIds, ...existingUserIds]),
         oldValue: JSON.stringify(existingUserIds),
       },
