@@ -5,7 +5,6 @@ import { useListTaskDeletionAuditLogQuery } from '@/app/hooks/queries/use-list-t
 import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
 import { cn } from '@/lib/utils';
-import { truncateString } from '@/app/utils/truncate-string';
 import { formatDateToBRWithHour } from '@/app/utils/format-date-br';
 import { fieldLabels } from '@/config/labels';
 
@@ -19,6 +18,7 @@ import {
 } from '@/view/components/ui/dropdown-menu';
 import { AuthorCell } from '../../author-cell';
 import { TaskUpdateValueCell } from '../../task-update-value-cell';
+import { TitleCell } from '../../title-cell';
 
 import type { ColumnDef } from '@tanstack/react-table';
 import type {
@@ -48,7 +48,7 @@ export function useColumns(): ColumnDef<ListUpdateTaskAuditLogWithAuthorData>[] 
       {
         accessorKey: 'taskTitle',
         header: 'Título',
-        cell: ({ row }) => truncateString(row.original.taskTitle, 40),
+        cell: ({ row }) => <TitleCell row={row} />,
         meta: {
           nameInFilters: 'Título',
         },

@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useTaskAuditLog } from '../../context/use-task-audit-log';
 
-import { truncateString } from '@/app/utils/truncate-string';
 import { formatDateToBRWithHour } from '@/app/utils/format-date-br';
 
 import { EllipsisIcon, Trash2Icon } from 'lucide-react';
@@ -14,6 +13,7 @@ import {
 } from '@/view/components/ui/dropdown-menu';
 import { AuthorCell } from '../../author-cell';
 import { TaskDetailsPopover } from '../../task-details-popover';
+import { TitleCell } from '../../title-cell';
 
 import type { ColumnDef } from '@tanstack/react-table';
 import type { ListDeletionTaskAuditLogWithAuthorData } from '@challenge/shared';
@@ -36,7 +36,7 @@ export function useColumns(): ColumnDef<ListDeletionTaskAuditLogWithAuthorData>[
       {
         accessorKey: 'taskTitle',
         header: 'Título',
-        cell: ({ row }) => truncateString(row.original.taskTitle, 40),
+        cell: ({ row }) => <TitleCell row={row} />,
         meta: {
           nameInFilters: 'Título',
         },
