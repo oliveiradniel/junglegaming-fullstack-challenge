@@ -6,7 +6,7 @@ import {
 
 import { Socket } from 'socket.io';
 
-import { TAuditAction } from '@challenge/shared';
+import { ActionPayload } from '@challenge/shared';
 
 @WebSocketGateway({ cors: { origin: '*' } })
 export class TaskAuditLogGateway
@@ -33,7 +33,7 @@ export class TaskAuditLogGateway
     }
   }
 
-  notifyDeletedTaskAuditLog({ action }: { action: TAuditAction }) {
+  notifyDeletedTaskAuditLog({ action }: ActionPayload) {
     this.clients.forEach((client) => {
       client.emit('task-audit-log:deleted', { action });
     });

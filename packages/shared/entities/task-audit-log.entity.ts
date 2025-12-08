@@ -13,7 +13,7 @@ export enum AuditAction {
   DELETE = 'DELETE',
 }
 
-export type TAuditAction = keyof typeof AuditAction;
+export type TAuditAction = 'CREATE' | 'UPDATE' | 'DELETE';
 
 export interface TaskAuditLog {
   id: string;

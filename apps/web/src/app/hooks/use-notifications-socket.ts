@@ -7,11 +7,11 @@ import { toast } from '../utils/toast';
 import { priorityLabels, statusLabels } from '@/config/labels';
 
 import type {
+  ActionPayload,
   AssignedToTaskNotificationPayload,
   DeletedTaskNotificationPayload,
   NewCommentNotificationPayload,
   Task,
-  TAuditAction,
   UpdatedTaskNotificationPayload,
   UpdatedTaskPriorityNotificationPayload,
   UpdatedTaskStatusNotificationPayload,
@@ -153,22 +153,19 @@ export function useNotificationsSocket({
       });
     });
 
-    socket.on(
-      'task-audit-log:deleted',
-      ({ action }: { action: TAuditAction }) => {
-        const actionLabels = {
-          CREATE: 'creation',
-          UPDATE: 'update',
-          DELETE: 'deletion',
-        };
+    socket.on('task-audit-log:deleted', ({ action }: ActionPayload) => {
+      const actionLabels = {
+        CREATE: 'creation',
+        UPDATE: 'update',
+        DELETE: 'deletion',
+      };
 
-        const actionLabel = actionLabels[action];
+      const actionLabel = actionLabels[action];
 
-        queryClient.invalidateQueries({
-          queryKey: [`task-${actionLabel}-audit-logs`],
-        });
-      },
-    );
+      queryClient.invalidateQueries({
+        queryKey: [`task-${actionLabel}-audit-logs`],
+      });
+    });
 
     return () => {
       socket.disconnect();
