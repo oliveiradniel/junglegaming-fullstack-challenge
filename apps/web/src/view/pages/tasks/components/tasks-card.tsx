@@ -30,9 +30,14 @@ export function TasksCard({ filteredTasksList }: TasksCardProps) {
           commentsCount,
         }) => {
           return (
-            <Card key={id} className="w-full max-w-[300px] p-4">
-              <div className="flex w-full items-center justify-between">
-                <CardTitle>{title}</CardTitle>
+            <Card
+              key={id}
+              className="flex w-full max-w-[300px] justify-between p-4"
+            >
+              <div className="flex w-full items-start justify-between">
+                <CardTitle>
+                  <p className="break-all">{truncateString(title, 60)}</p>
+                </CardTitle>
 
                 <TaskActionsPopover
                   taskId={id}
@@ -41,6 +46,7 @@ export function TasksCard({ filteredTasksList }: TasksCardProps) {
                   createdAt={createdAt}
                 />
               </div>
+
               <CardDescription>
                 {truncateString(description, 30)}
               </CardDescription>
